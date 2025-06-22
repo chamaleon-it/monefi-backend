@@ -70,11 +70,9 @@ export class AuthService {
     const decoded = await this.verifyRefreshToken(refreshToken);
     if (!decoded?.id) throw new ForbiddenException('Invalid refresh token');
 
-    console.log(decoded.id);
     const user = await this.usersService.getUserByIdWithRefreshToken(
       decoded.id,
     );
-    console.log(user);
     if (!user || user.refreshToken !== refreshToken)
       throw new ForbiddenException('Refresh token mismatch');
 
