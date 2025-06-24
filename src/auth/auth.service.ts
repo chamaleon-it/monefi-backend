@@ -11,6 +11,7 @@ import { JwtService } from '@nestjs/jwt';
 import mongoose from 'mongoose';
 import { RefreshDto } from './dto/refresh.dto';
 import configuration from 'src/config/configuration';
+import { UserStatus } from 'src/enum/user-status.enum';
 
 @Injectable()
 export class AuthService {
@@ -23,6 +24,20 @@ export class AuthService {
     try {
       const user = await this.usersService.getUserByEmail(loginDto.email);
       if (!user) throw new NotFoundException('User not found');
+      if (user.status !== UserStatus.ACTIVE) {
+        if (user.status === UserStatus.INACTIVE)
+          throw new BadRequestException(
+            'Your account is inactive,To active please contact our support team',
+          );
+        if (user.status === UserStatus.SUSPENDED)
+          throw new BadRequestException(
+            'Your account is suspended,To active please contact our support team',
+          );
+        if (user.status === UserStatus.DELETED)
+          throw new BadRequestException(
+            'Your account is deleted,To recover please contact our support team',
+          );
+      }
       const isPasswordMatching = await bcrypt.compare(
         loginDto.password,
         user.password,
@@ -85,13 +100,14 @@ export class AuthService {
     const refreshTokenPayload = { id: user._id };
 
     const accessToken = await this.jwtService.signAsync(accessTokenPayload, {
-      expiresIn: '15m', // Set expiration as per your policy
+      expiresIn: '1h',
     });
 
     const newRefreshToken = await this.jwtService.signAsync(
       refreshTokenPayload,
       {
-        expiresIn: '7d', // Refresh token expiry
+        expiresIn: '7d',
+        secret: configuration().secret.refreshToken,
       },
     );
 

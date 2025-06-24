@@ -1,10 +1,12 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
   Query,
+  UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
@@ -17,6 +19,8 @@ import { JWTUserInterface } from 'src/interface/jwt-user.interface';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { UserRoles } from 'src/enum/user.enum';
 import { RolesGuard } from 'src/auth/guards/ jwt-auth.guard';
+import { DeleteUserDto } from './dto/delete-user.dto';
+import { UserStatus } from 'src/enum/user-status.enum';
 
 @Controller('users')
 export class UsersController {
@@ -64,4 +68,19 @@ export class UsersController {
       data,
     };
   }
+
+@UseGuards(JwtAuthGuard)
+@Delete(":id")
+async deleteUser(@Param() deleteUserDto:DeleteUserDto,@GetUser() user:JWTUserInterface){
+  if(deleteUserDto.id === user.id || user.role === UserRoles.ADMIN){
+    const data = await this.usersService.updateUserStatus({id:deleteUserDto.id,status:UserStatus.DELETED})
+    return {
+      message:"user deleted",
+      data
+    }
+  }
+  throw new UnauthorizedException()
+}
+
+
 }

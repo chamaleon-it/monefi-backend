@@ -12,6 +12,7 @@ import { GetUserDto } from './dto/get-user.dto';
 import { GetAllUsersDto } from './dto/get-all-users.dto';
 import { UserRoles } from 'src/enum/user.enum';
 import { UserStatus } from 'src/enum/user-status.enum';
+import { DeleteUserDto } from './dto/delete-user.dto';
 
 @Injectable()
 export class UsersService {
@@ -64,7 +65,7 @@ export class UsersService {
       const users = await this.userModal
         .find(filter)
         .skip(skip)
-        .limit(limit)
+        .limit(limit).sort("-createdAt")
         .lean();
 
       const totalPage = Math.ceil(total / limit);
@@ -80,6 +81,20 @@ export class UsersService {
       };
     } catch (error) {
       throw error;
+    }
+  }
+
+  async updateUserStatus({id,status}:{id:mongoose.Types.ObjectId,status:UserStatus}){
+    try {
+      const user = await this.userModal.findById(id)
+      if(!user){
+        throw new NotFoundException("User not found")
+      }
+      user.status = status
+      await user.save()
+      return user
+    } catch (error) {
+      throw error
     }
   }
 
