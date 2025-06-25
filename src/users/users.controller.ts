@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  Patch,
   Post,
   Query,
   UnauthorizedException,
@@ -21,6 +22,7 @@ import { UserRoles } from 'src/enum/user.enum';
 import { RolesGuard } from 'src/auth/guards/ jwt-auth.guard';
 import { DeleteUserDto } from './dto/delete-user.dto';
 import { UserStatus } from 'src/enum/user-status.enum';
+import { ChangePasswordDto } from './dto/change-password.dto';
 
 @Controller('users')
 export class UsersController {
@@ -69,18 +71,38 @@ export class UsersController {
     };
   }
 
-@UseGuards(JwtAuthGuard)
-@Delete(":id")
-async deleteUser(@Param() deleteUserDto:DeleteUserDto,@GetUser() user:JWTUserInterface){
-  if(deleteUserDto.id === user.id || user.role === UserRoles.ADMIN){
-    const data = await this.usersService.updateUserStatus({id:deleteUserDto.id,status:UserStatus.DELETED})
-    return {
-      message:"user deleted",
-      data
+  @UseGuards(JwtAuthGuard)
+  @Delete(':id')
+  async deleteUser(
+    @Param() deleteUserDto: DeleteUserDto,
+    @GetUser() user: JWTUserInterface,
+  ) {
+    if (deleteUserDto.id === user.id || user.role === UserRoles.ADMIN) {
+      const data = await this.usersService.updateUserStatus({
+        id: deleteUserDto.id,
+        status: UserStatus.DELETED,
+      });
+      return {
+        message: 'user deleted',
+        data,
+      };
     }
+    throw new UnauthorizedException();
   }
-  throw new UnauthorizedException()
-}
 
-
+  @UseGuards(JwtAuthGuard)
+  @Patch('change_password')
+  async changePassword(
+    @GetUser() user: JWTUserInterface,
+    @Body() changePasswordDto: ChangePasswordDto,
+  ) {
+    const data = await this.usersService.changePassword(
+      user.id,
+      changePasswordDto,
+    );
+    return {
+      data,
+      message: 'Password has changed successfully',
+    };
+  }
 }

@@ -13,6 +13,8 @@ import { GetAllUsersDto } from './dto/get-all-users.dto';
 import { UserRoles } from 'src/enum/user.enum';
 import { UserStatus } from 'src/enum/user-status.enum';
 import { DeleteUserDto } from './dto/delete-user.dto';
+import { ChangePasswordDto } from './dto/change-password.dto';
+import { JWTUserInterface } from 'src/interface/jwt-user.interface';
 
 @Injectable()
 export class UsersService {
@@ -65,7 +67,8 @@ export class UsersService {
       const users = await this.userModal
         .find(filter)
         .skip(skip)
-        .limit(limit).sort("-createdAt")
+        .limit(limit)
+        .sort('-createdAt')
         .lean();
 
       const totalPage = Math.ceil(total / limit);
@@ -84,17 +87,55 @@ export class UsersService {
     }
   }
 
-  async updateUserStatus({id,status}:{id:mongoose.Types.ObjectId,status:UserStatus}){
+  async updateUserStatus({
+    id,
+    status,
+  }: {
+    id: mongoose.Types.ObjectId;
+    status: UserStatus;
+  }) {
     try {
-      const user = await this.userModal.findById(id)
-      if(!user){
-        throw new NotFoundException("User not found")
+      const user = await this.userModal.findById(id);
+      if (!user) {
+        throw new NotFoundException('User not found');
       }
-      user.status = status
-      await user.save()
-      return user
+      user.status = status;
+      await user.save();
+      return user;
     } catch (error) {
-      throw error
+      throw error;
+    }
+  }
+
+  async changePassword(
+    id: mongoose.Types.ObjectId,
+    changePasswordDto: ChangePasswordDto,
+  ) {
+    try {
+      if (changePasswordDto.password !== changePasswordDto.confirmPassword)
+        throw new BadRequestException(
+          'Password and confirm password are not matching.',
+        );
+
+      if (changePasswordDto.password === changePasswordDto.currentPassword)
+        throw new BadRequestException(
+          'Current password and new pasword are same.',
+        );
+
+      const user = await this.userModal.findById(id).select('+password');
+      if (!user) throw new NotFoundException('User not found');
+      const isPasswordMatching = await bcrypt.compare(
+        changePasswordDto.currentPassword,
+        user.password,
+      );
+      if (isPasswordMatching)
+        throw new BadRequestException('Invalid credentials');
+
+      user.password = await bcrypt.hash(changePasswordDto.password, 10);
+      await user.save();
+      return null;
+    } catch (error) {
+      throw error;
     }
   }
 
