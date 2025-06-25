@@ -33,7 +33,7 @@ export class BondsService {
   async getBonds(user: JWTUserInterface, getAllBonds: GetAllBonds) {
     const { role } = user;
     const { limit = 10, page = 1 } = getAllBonds;
-    const filter: { isPublic?: boolean } = { isPublic: true };
+    const filter: { isPublic?: boolean } = {};
     if (role === UserRoles.USER) {
       filter.isPublic = true;
     }
