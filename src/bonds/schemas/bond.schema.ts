@@ -5,7 +5,7 @@ import { CouponType } from 'src/enum/coupon-type.enum';
 
 export type BondDocument = HydratedDocument<Bond>;
 
-@Schema()
+@Schema({timestamps:true,versionKey:false})
 export class Bond {
   @Prop({ required: true, unique: true })
   name: string;
