@@ -35,7 +35,7 @@ export class BondsService {
     const { limit = 10, page = 1 } = getAllBonds;
     const filter: { isPublic?: boolean } = { isPublic: true };
     if (role === UserRoles.USER) {
-      filter.isPublic = false;
+      filter.isPublic = true;
     }
     try {
       const skip = (page - 1) * limit;
