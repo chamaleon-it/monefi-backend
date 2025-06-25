@@ -1,7 +1,7 @@
-import { IsMongoId } from "class-validator";
-import mongoose from "mongoose";
+import { IsMongoId } from 'class-validator';
+import mongoose from 'mongoose';
 
 export class DeleteUserDto {
-    @IsMongoId()
-    id:mongoose.Types.ObjectId
+  @IsMongoId()
+  id: mongoose.Types.ObjectId;
 }

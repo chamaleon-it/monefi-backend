@@ -3,7 +3,7 @@ import { JWTUserInterface } from 'src/interface/jwt-user.interface';
 
 export const GetUser = createParamDecorator(
   (data: unknown, ctx: ExecutionContext): JWTUserInterface => {
-    const request:{user:JWTUserInterface} = ctx.switchToHttp().getRequest();
+    const request: { user: JWTUserInterface } = ctx.switchToHttp().getRequest();
     return request.user;
   },
 );

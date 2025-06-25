@@ -12,9 +12,9 @@ import { GetUserDto } from './dto/get-user.dto';
 import { GetAllUsersDto } from './dto/get-all-users.dto';
 import { UserRoles } from 'src/enum/user.enum';
 import { UserStatus } from 'src/enum/user-status.enum';
-import { DeleteUserDto } from './dto/delete-user.dto';
+// import { DeleteUserDto } from './dto/delete-user.dto';
 import { ChangePasswordDto } from './dto/change-password.dto';
-import { JWTUserInterface } from 'src/interface/jwt-user.interface';
+// import { JWTUserInterface } from 'src/interface/jwt-user.interface';
 
 @Injectable()
 export class UsersService {
@@ -128,7 +128,7 @@ export class UsersService {
         changePasswordDto.currentPassword,
         user.password,
       );
-      if (isPasswordMatching)
+      if (!isPasswordMatching)
         throw new BadRequestException('Invalid credentials');
 
       user.password = await bcrypt.hash(changePasswordDto.password, 10);
