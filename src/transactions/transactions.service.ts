@@ -54,7 +54,7 @@ export class TransactionsService {
         .skip(skip)
         .limit(limit)
         .sort('-createdAt')
-        .lean();
+        .lean().populate("User");
 
         const totalPage = Math.ceil(total / limit);
 
