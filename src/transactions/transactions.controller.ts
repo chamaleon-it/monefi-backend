@@ -1,10 +1,11 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
 import { TransactionsService } from './transactions.service';
 import { GetUser } from 'src/auth/decorators/get-user.decorator';
 import { JWTUserInterface } from 'src/interface/jwt-user.interface';
 import { BuyStockOrCrypto } from './dto/buy-stock-or-crypto';
 import { InvestmentType } from 'src/enum/investment-type.enum';
 import { JwtAuthGuard } from 'src/auth/guards/roles.guard';
+import { GetAllTransactions } from './dto/get-all-transactions.dto';
 
 @Controller('transactions')
 export class TransactionsController {
@@ -51,5 +52,17 @@ export class TransactionsController {
   @Post('bond')
   async buyBond(@GetUser() user: JWTUserInterface) {
     console.log(user);
+  }
+
+
+  @UseGuards(JwtAuthGuard)
+  @Get()
+  async getTransactions(@GetUser() user:JWTUserInterface,@Query() getAllTransactions:GetAllTransactions){
+    const {data,pagination} = await this.transactionsService.getTransactions(user,getAllTransactions)
+    return {
+      data,
+      pagination,
+      message:"All tranasction retrived"
+    }
   }
 }
