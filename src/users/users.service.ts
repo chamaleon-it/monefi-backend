@@ -154,7 +154,8 @@ export class UsersService {
         throw new BadRequestException('User not exist.');
       }
       user.balance = user.balance - balance;
-      return user;
+      
+      await user.save()
     } catch (error) {
       throw error;
     }
