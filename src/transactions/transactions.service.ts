@@ -24,10 +24,7 @@ export class TransactionsService {
         throw new BadRequestException(
           "Low balance! You don't have enough funds to buy this stock. Contact support to add more.",
         );
-      await this.usersService.debitUserBalance(
-        user._id,
-        buyStockOrCrypto.totalValue,
-      );
+    
 
       const transaction = await this.transactionModel.create(buyStockOrCrypto);
       return transaction;
@@ -53,7 +50,7 @@ export class TransactionsService {
       const total = await this.transactionModel.countDocuments(filter);
       const bonds = await this.transactionModel
         .find(filter)
-        .populate('users')
+        .populate('user',"email")
         .skip(skip)
         .limit(limit)
         .sort('-createdAt')
