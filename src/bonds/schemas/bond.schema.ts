@@ -5,7 +5,7 @@ import { CouponType } from 'src/enum/coupon-type.enum';
 
 export type BondDocument = HydratedDocument<Bond>;
 
-@Schema({timestamps:true,versionKey:false})
+@Schema({ timestamps: true, versionKey: false })
 export class Bond {
   @Prop({ required: true, unique: true })
   name: string;
@@ -22,14 +22,14 @@ export class Bond {
   @Prop({ required: true })
   unitPrice: number;
 
-  @Prop({required:true,enum:CouponType})
-  couponType:CouponType
+  @Prop({ required: true, enum: CouponType })
+  couponType: CouponType;
 
-  @Prop({required:true,type:Date})
-  meturityDate:Date
+  @Prop({ required: true, type: Date })
+  meturityDate: Date;
 
-  @Prop({default:true})
-  isPublic:boolean
+  @Prop({ default: true })
+  isPublic: boolean;
 }
 
 export const BondSchema = SchemaFactory.createForClass(Bond);

@@ -5,7 +5,9 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Bond, BondSchema } from './schemas/bond.schema';
 
 @Module({
-  imports:[MongooseModule.forFeature([{ name: Bond.name, schema: BondSchema }])],
+  imports: [
+    MongooseModule.forFeature([{ name: Bond.name, schema: BondSchema }]),
+  ],
   controllers: [BondsController],
   providers: [BondsService],
 })

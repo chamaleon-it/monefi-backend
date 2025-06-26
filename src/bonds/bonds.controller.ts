@@ -13,27 +13,31 @@ import { GetAllBonds } from './dto/get-all-bonds.dto';
 export class BondsController {
   constructor(private readonly bondsService: BondsService) {}
 
-  @UseGuards(JwtAuthGuard,RolesGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRoles.ADMIN)
   @Post()
-  async createBond(@Body() createBondDto:CreateBondDto){
-    const data = await this.bondsService.createBond(createBondDto)
+  async createBond(@Body() createBondDto: CreateBondDto) {
+    const data = await this.bondsService.createBond(createBondDto);
     return {
       data,
-      message:"Bond is created successfully"
-    }
+      message: 'Bond is created successfully',
+    };
   }
 
   @UseGuards(JwtAuthGuard)
   @Get()
-  async getBonds(@GetUser() user:JWTUserInterface,@Query() getAllBonds:GetAllBonds){
-    const {data,pagination} = await this.bondsService.getBonds(user,getAllBonds)
+  async getBonds(
+    @GetUser() user: JWTUserInterface,
+    @Query() getAllBonds: GetAllBonds,
+  ) {
+    const { data, pagination } = await this.bondsService.getBonds(
+      user,
+      getAllBonds,
+    );
     return {
-      message:"All bond where retrived",
+      message: 'All bond where retrived',
       data,
-      pagination
-    }
+      pagination,
+    };
   }
-  
-
 }

@@ -59,7 +59,7 @@ export class BondsService {
         },
       };
     } catch (error) {
-        throw error
+      throw error;
     }
   }
 }

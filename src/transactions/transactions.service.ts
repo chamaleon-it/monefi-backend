@@ -29,7 +29,7 @@ export class TransactionsService {
       const transaction = await this.transactionModel.create(buyStockOrCrypto);
       return transaction;
     } catch (error) {
-        throw error
+      throw error;
     }
   }
 

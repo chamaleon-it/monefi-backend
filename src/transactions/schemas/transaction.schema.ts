@@ -7,10 +7,10 @@ export type TransactionDocument = HydratedDocument<Transaction>;
 
 @Schema({ timestamps: true, versionKey: false })
 export class Transaction {
-  @Prop({ required: true,trim:true })
+  @Prop({ required: true, trim: true })
   symbol: string;
 
-  @Prop({ required: true,trim:true })
+  @Prop({ required: true, trim: true })
   name: string;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })

@@ -147,16 +147,16 @@ export class UsersService {
     return await this.userModal.findById(id).select('+refreshToken').lean();
   }
 
-  async debitUserBalance(id:mongoose.Types.ObjectId,balance:number){
+  async debitUserBalance(id: mongoose.Types.ObjectId, balance: number) {
     try {
-      const user = await this.userModal.findById(id)
-      if(!user){
-        throw new BadRequestException("User not exist.")
+      const user = await this.userModal.findById(id);
+      if (!user) {
+        throw new BadRequestException('User not exist.');
       }
-      user.balance = user.balance - balance
-      return user
+      user.balance = user.balance - balance;
+      return user;
     } catch (error) {
-      
+      throw error;
     }
   }
 

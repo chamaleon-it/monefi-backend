@@ -25,9 +25,8 @@ export class User {
   @Prop({ default: null, type: Date })
   lastLogin: Date | string;
 
-  @Prop({default:0})
-  balance:number
-
+  @Prop({ default: 0 })
+  balance: number;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

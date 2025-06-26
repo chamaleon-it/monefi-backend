@@ -46,5 +46,7 @@ export class TransactionsController {
   }
 
   @Post('bond')
-  async buyBond(@GetUser() user: JWTUserInterface) {}
+  async buyBond(@GetUser() user: JWTUserInterface) {
+    console.log(user);
+  }
 }

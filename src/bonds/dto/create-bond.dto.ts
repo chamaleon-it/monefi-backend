@@ -1,7 +1,6 @@
 import { Transform } from 'class-transformer';
 import {
   IsBoolean,
-  IsDateString,
   IsEnum,
   IsNotEmpty,
   IsNumber,
@@ -41,7 +40,7 @@ export class CreateBondDto {
 
   // @IsDateString({}, { message: 'Maturity date must be a valid ISO date string.' })
   @IsNotEmpty({ message: 'Maturity date is required.' })
-  @Transform(({value}:{value:string})=>new Date(value))
+  @Transform(({ value }: { value: string }) => new Date(value))
   meturityDate: Date;
 
   @IsBoolean({ message: 'isPublic must be a boolean value (true or false).' })

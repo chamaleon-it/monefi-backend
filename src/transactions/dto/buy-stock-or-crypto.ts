@@ -1,4 +1,10 @@
-import { IsEnum, IsMongoId, IsNumber, IsOptional, IsString } from 'class-validator';
+import {
+  IsEnum,
+  IsMongoId,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 import mongoose from 'mongoose';
 import { InvestmentType } from 'src/enum/investment-type.enum';
 
@@ -11,7 +17,7 @@ export class BuyStockOrCrypto {
 
   @IsNumber({}, { message: 'Unit price must be a valid number.' })
   unitPrice: number;
-  
+
   @IsNumber({}, { message: 'Quantity must be a valid number.' })
   quantity: number;
 
