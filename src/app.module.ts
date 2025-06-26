@@ -7,6 +7,7 @@ import configuration from './config/configuration';
 import { DatabaseModule } from './database/database.module';
 import { AuthModule } from './auth/auth.module';
 import { BondsModule } from './bonds/bonds.module';
+import { TransactionsModule } from './transactions/transactions.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { BondsModule } from './bonds/bonds.module';
     UsersModule,
     AuthModule,
     BondsModule,
+    TransactionsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

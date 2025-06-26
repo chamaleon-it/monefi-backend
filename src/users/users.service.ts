@@ -147,6 +147,19 @@ export class UsersService {
     return await this.userModal.findById(id).select('+refreshToken').lean();
   }
 
+  async debitUserBalance(id:mongoose.Types.ObjectId,balance:number){
+    try {
+      const user = await this.userModal.findById(id)
+      if(!user){
+        throw new BadRequestException("User not exist.")
+      }
+      user.balance = user.balance - balance
+      return user
+    } catch (error) {
+      
+    }
+  }
+
   async updateLoginTime(id: mongoose.Types.ObjectId, refreshToken: string) {
     await this.userModal.updateOne(
       { _id: id },
