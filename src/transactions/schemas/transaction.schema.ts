@@ -14,7 +14,7 @@ export class Transaction {
   @Prop({ required: true, trim: true })
   name: string;
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'users' })
   user: mongoose.Types.ObjectId;
 
   @Prop({ required: true })

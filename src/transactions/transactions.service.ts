@@ -38,25 +38,28 @@ export class TransactionsService {
 
   async buyBond() {}
 
-
-  async getTransactions(user:JWTUserInterface,getAllTransactions:GetAllTransactions){
+  async getTransactions(
+    user: JWTUserInterface,
+    getAllTransactions: GetAllTransactions,
+  ) {
     try {
-      const {limit = 10, page = 1} = getAllTransactions
-      const filter:{user?:mongoose.Types.ObjectId} = {}
-      if(user.role === UserRoles.USER){
-        filter.user = user.id
+      const { limit = 10, page = 1 } = getAllTransactions;
+      const filter: { user?: mongoose.Types.ObjectId } = {};
+      if (user.role === UserRoles.USER) {
+        filter.user = user.id;
       }
 
       const skip = (page - 1) * limit;
       const total = await this.transactionModel.countDocuments(filter);
       const bonds = await this.transactionModel
         .find(filter)
+        .populate('users')
         .skip(skip)
         .limit(limit)
         .sort('-createdAt')
-        .lean().populate("User");
+        .lean();
 
-        const totalPage = Math.ceil(total / limit);
+      const totalPage = Math.ceil(total / limit);
 
       return {
         data: bonds,
@@ -66,13 +69,9 @@ export class TransactionsService {
           limit,
           totalPage,
         },
-      }
-
-
-
+      };
     } catch (error) {
-      throw error
+      throw error;
     }
-    }
-
+  }
 }
