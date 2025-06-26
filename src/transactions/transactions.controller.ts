@@ -1,14 +1,16 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, UseGuards } from '@nestjs/common';
 import { TransactionsService } from './transactions.service';
 import { GetUser } from 'src/auth/decorators/get-user.decorator';
 import { JWTUserInterface } from 'src/interface/jwt-user.interface';
 import { BuyStockOrCrypto } from './dto/buy-stock-or-crypto';
 import { InvestmentType } from 'src/enum/investment-type.enum';
+import { JwtAuthGuard } from 'src/auth/guards/roles.guard';
 
 @Controller('transactions')
 export class TransactionsController {
   constructor(private readonly transactionsService: TransactionsService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Post('/stock')
   async buyStock(
     @GetUser() user: JWTUserInterface,
@@ -27,6 +29,7 @@ export class TransactionsController {
     };
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post('/crypto')
   async buyCrypto(
     @GetUser() user: JWTUserInterface,
