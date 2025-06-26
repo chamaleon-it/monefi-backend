@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument } from 'mongoose';
 import { InvestmentType } from 'src/enum/investment-type.enum';
+import { TradeAction } from 'src/enum/trade-action.enum';
 import { TransactionStatus } from 'src/enum/transaction-status.enum';
 
 export type TransactionDocument = HydratedDocument<Transaction>;
@@ -26,11 +27,16 @@ export class Transaction {
   totalValue: number;
 
   @Prop({
-    required: true,
     enum: TransactionStatus,
     default: TransactionStatus.PENDING,
   })
   status: TransactionStatus;
+
+  @Prop({
+    enum: TradeAction,
+    default: TradeAction.BUY,
+  })
+  tradeAction: TradeAction;
 
   @Prop({ required: true, enum: InvestmentType })
   investmentType: InvestmentType;
