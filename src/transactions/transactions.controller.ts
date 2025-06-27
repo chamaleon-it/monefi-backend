@@ -56,7 +56,21 @@ export class TransactionsController {
       await this.transactionsService.buyStockOrCrypto(buyStockOrCrypto);
     return {
       message:
-        'Your crypto purchase request is pending. Please wait for confirmation.',
+        'Your  purchase request is pending. Please wait for confirmation.',
+      data,
+    };
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRoles.ADMIN)
+  @Post('/invest')
+  async invest(@Body() buyStockOrCrypto: BuyStockOrCrypto) {
+   buyStockOrCrypto.totalValue = buyStockOrCrypto.quantity * buyStockOrCrypto.unitPrice;
+    const data =
+      await this.transactionsService.buyStockOrCrypto(buyStockOrCrypto);
+    return {
+      message:
+        'Your  purchase request is pending. Please wait for confirmation.',
       data,
     };
   }
@@ -87,7 +101,6 @@ export class TransactionsController {
   @Roles(UserRoles.ADMIN)
   @Patch('/status')
   async updateStatus(@Body() updateStatusDto: UpdateStatusDto) {
-    
     const data = await this.transactionsService.updateStatus(updateStatusDto);
     return {
       message: 'Transaction status updated',
