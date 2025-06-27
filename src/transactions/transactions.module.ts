@@ -12,7 +12,7 @@ import { PortfolioModule } from 'src/portfolio/portfolio.module';
       { name: Transaction.name, schema: TransactionSchema },
     ]),
     UsersModule,
-    PortfolioModule
+    PortfolioModule,
   ],
   controllers: [TransactionsController],
   providers: [TransactionsService],

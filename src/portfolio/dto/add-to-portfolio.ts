@@ -1,29 +1,28 @@
-import { IsEnum, IsMongoId, isMongoId, IsNumber, IsString } from "class-validator"
-import mongoose, { Mongoose } from "mongoose"
-import { InvestmentType } from "src/enum/investment-type.enum"
+import { IsEnum, IsMongoId, IsNumber, IsString } from 'class-validator';
+import mongoose from 'mongoose';
+import { InvestmentType } from 'src/enum/investment-type.enum';
 
-export class AddToPortfolioDto{
-    @IsString()
-    symbol:string
+export class AddToPortfolioDto {
+  @IsString()
+  symbol: string;
 
-    @IsString()
-    name:string
+  @IsString()
+  name: string;
 
-    @IsMongoId()
-    user:mongoose.Types.ObjectId
+  @IsMongoId()
+  user: mongoose.Types.ObjectId;
 
-    @IsNumber()
-    quantity:number
+  @IsNumber()
+  quantity: number;
 
-    @IsNumber()
-    unitPrice:number
-    @IsNumber()
-    totalValue:number
+  @IsNumber()
+  unitPrice: number;
+  @IsNumber()
+  totalValue: number;
 
-    @IsEnum(InvestmentType)
-    investmentType:InvestmentType
+  @IsEnum(InvestmentType)
+  investmentType: InvestmentType;
 
-    @IsMongoId()
-    transaction:mongoose.Types.ObjectId
-
+  @IsMongoId()
+  transaction: mongoose.Types.ObjectId;
 }

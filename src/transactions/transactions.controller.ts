@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Patch, Post, Query, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Patch,
+  Post,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { TransactionsService } from './transactions.service';
 import { GetUser } from 'src/auth/decorators/get-user.decorator';
 import { JWTUserInterface } from 'src/interface/jwt-user.interface';
@@ -58,22 +66,31 @@ export class TransactionsController {
     console.log(user);
   }
 
-
   @UseGuards(JwtAuthGuard)
   @Get()
-  async getTransactions(@GetUser() user:JWTUserInterface,@Query() getAllTransactions:GetAllTransactions){
-    const {data,pagination} = await this.transactionsService.getTransactions(user,getAllTransactions)
+  async getTransactions(
+    @GetUser() user: JWTUserInterface,
+    @Query() getAllTransactions: GetAllTransactions,
+  ) {
+    const { data, pagination } = await this.transactionsService.getTransactions(
+      user,
+      getAllTransactions,
+    );
     return {
       data,
       pagination,
-      message:"All tranasction retrived"
-    }
+      message: 'All tranasction retrived',
+    };
   }
 
-  @UseGuards(JwtAuthGuard,RolesGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRoles.ADMIN)
   @Patch('/status')
-  async updateStatus(@Body() updateStatusDto:UpdateStatusDto){
-
+  async updateStatus(@Body() updateStatusDto: UpdateStatusDto) {
+    const data = await this.transactionsService.updateStatus(updateStatusDto);
+    return {
+      message: 'Transaction status updated',
+      data,
+    };
   }
 }
