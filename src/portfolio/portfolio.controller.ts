@@ -22,4 +22,16 @@ export class PortfolioController {
   }
   }
 
+  @UseGuards(JwtAuthGuard,RolesGuard)
+  @Roles(UserRoles.ADMIN)
+  @Get("/statastics")
+  async statastics(){
+    const data = await this.portfolioService.statastics()
+    return{
+      message:"Portfolio statastics retrived",
+      data
+    }
+  }
+
+
 }

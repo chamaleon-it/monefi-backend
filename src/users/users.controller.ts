@@ -105,4 +105,15 @@ export class UsersController {
       message: 'Password has changed successfully',
     };
   }
+
+  @UseGuards(JwtAuthGuard,RolesGuard)
+  @Roles(UserRoles.ADMIN)
+  async getFullBalance(){
+    const data = await this.usersService.getFullBalance()
+    return {
+      message:"Full balance retrived",
+      data
+    }
+  }
+
 }
