@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Portfolio } from './schemas/portfolio.schema';
 import { Model } from 'mongoose';
 import { AddToPortfolioDto } from './dto/add-to-portfolio';
+import { JWTUserInterface } from 'src/interface/jwt-user.interface';
 
 @Injectable()
 export class PortfolioService {
@@ -18,4 +19,14 @@ export class PortfolioService {
       throw error;
     }
   }
+
+  async getPortfolio( user:JWTUserInterface){
+        try {
+            const portfolio = await this.portfolioModel.find({user:user.id}).sort("-createdAt").lean()
+            return portfolio
+        } catch (error) {
+            throw error
+        }
+    }
+
 }
