@@ -71,6 +71,19 @@ export class UsersController {
     };
   }
 
+
+
+  @UseGuards(JwtAuthGuard,RolesGuard)
+  @Roles(UserRoles.ADMIN)
+  @Get("/get_full_balance")
+  async getFullBalance(){
+    const data = await this.usersService.getFullBalance()
+    return {
+      message:"Full balance retrived",
+      data
+    }
+  }
+
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
   async deleteUser(
@@ -106,15 +119,5 @@ export class UsersController {
     };
   }
 
-  @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(UserRoles.ADMIN)
-  @Get("/get_full_balance")
-  async getFullBalance(){
-    const data = await this.usersService.getFullBalance()
-    return {
-      message:"Full balance retrived",
-      data
-    }
-  }
 
 }
