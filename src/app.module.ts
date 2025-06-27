@@ -8,6 +8,7 @@ import { DatabaseModule } from './database/database.module';
 import { AuthModule } from './auth/auth.module';
 import { BondsModule } from './bonds/bonds.module';
 import { TransactionsModule } from './transactions/transactions.module';
+import { PortfolioModule } from './portfolio/portfolio.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { TransactionsModule } from './transactions/transactions.module';
     AuthModule,
     BondsModule,
     TransactionsModule,
+    PortfolioModule,
   ],
   controllers: [AppController],
   providers: [AppService],

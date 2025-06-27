@@ -13,12 +13,14 @@ import { UserRoles } from 'src/enum/user.enum';
 import { GetAllTransactions } from './dto/get-all-transactions.dto';
 import { UpdateStatusDto } from './dto/update-status.dto';
 import { TransactionStatus } from 'src/enum/transaction-status.enum';
+import { PortfolioService } from 'src/portfolio/portfolio.service';
 
 @Injectable()
 export class TransactionsService {
   constructor(
     @InjectModel(Transaction.name) private transactionModel: Model<Transaction>,
     private readonly usersService: UsersService,
+    private readonly portfolioService: PortfolioService,
   ) {}
 
   async buyStockOrCrypto(buyStockOrCrypto: BuyStockOrCrypto) {
@@ -82,7 +84,9 @@ export class TransactionsService {
       const tranasction = await this.transactionModel.findById(updateStatusDto);
       if (!tranasction) throw new NotFoundException('Transaction not found.');
       if (tranasction.status !== TransactionStatus.PENDING)
-        throw new BadRequestException('Transaction already updated the status.');
+        throw new BadRequestException(
+          'Transaction already updated the status.',
+        );
 
       if (updateStatusDto.status === TransactionStatus.COMPLETED) {
         const user = await this.usersService.getUserById({
@@ -97,15 +101,25 @@ export class TransactionsService {
           tranasction.totalValue,
         );
         tranasction.status = TransactionStatus.COMPLETED;
-        await tranasction.save()
-        return tranasction
+        await tranasction.save();
+        await this.portfolioService.addToPortfolio({
+          symbol: tranasction.symbol,
+          name: tranasction.name,
+          user: user._id,
+          unitPrice: tranasction.unitPrice,
+          quantity: tranasction.quantity,
+          totalValue: tranasction.totalValue,
+          investmentType: tranasction.investmentType,
+          transaction: tranasction._id,
+        });
+        return tranasction;
       } else if (updateStatusDto.status === TransactionStatus.CANCELLED) {
         tranasction.status = TransactionStatus.CANCELLED;
-        await tranasction.save()
-        return tranasction
+        await tranasction.save();
+        return tranasction;
       }
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 }
