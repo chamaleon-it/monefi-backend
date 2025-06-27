@@ -108,6 +108,7 @@ export class UsersController {
 
   @UseGuards(JwtAuthGuard,RolesGuard)
   @Roles(UserRoles.ADMIN)
+  @Get("/get_full_balance")
   async getFullBalance(){
     const data = await this.usersService.getFullBalance()
     return {
