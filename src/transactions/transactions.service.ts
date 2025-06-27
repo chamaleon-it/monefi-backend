@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Transaction } from './schemas/transaction.schema';
 import mongoose, { Model } from 'mongoose';
@@ -7,6 +11,8 @@ import { UsersService } from 'src/users/users.service';
 import { JWTUserInterface } from 'src/interface/jwt-user.interface';
 import { UserRoles } from 'src/enum/user.enum';
 import { GetAllTransactions } from './dto/get-all-transactions.dto';
+import { UpdateStatusDto } from './dto/update-status.dto';
+import { TransactionStatus } from 'src/enum/transaction-status.enum';
 
 @Injectable()
 export class TransactionsService {
@@ -22,9 +28,8 @@ export class TransactionsService {
       });
       if (buyStockOrCrypto.totalValue > user.balance)
         throw new BadRequestException(
-          "Low balance! You don't have enough funds to buy this stock. Contact support to add more.",
+          "Low balance! You don't have enough funds to buy this purchase. Contact support to add more.",
         );
-    
 
       const transaction = await this.transactionModel.create(buyStockOrCrypto);
       return transaction;
@@ -50,7 +55,7 @@ export class TransactionsService {
       const total = await this.transactionModel.countDocuments(filter);
       const bonds = await this.transactionModel
         .find(filter)
-        .populate('user',"email")
+        .populate('user', 'email')
         .skip(skip)
         .limit(limit)
         .sort('-createdAt')
@@ -69,6 +74,38 @@ export class TransactionsService {
       };
     } catch (error) {
       throw error;
+    }
+  }
+
+  async updateStatus(updateStatusDto: UpdateStatusDto) {
+    try {
+      const tranasction = await this.transactionModel.findById(updateStatusDto);
+      if (!tranasction) throw new NotFoundException('Transaction not found.');
+      if (tranasction.status !== TransactionStatus.PENDING)
+        throw new BadRequestException('Transaction already updated the status.');
+
+      if (updateStatusDto.status === TransactionStatus.COMPLETED) {
+        const user = await this.usersService.getUserById({
+          id: tranasction._id,
+        });
+        if (tranasction.totalValue > user.balance)
+          throw new BadRequestException(
+            "Low balance! You don't have enough funds to buy this purchase.",
+          );
+        await this.usersService.debitUserBalance(
+          user._id,
+          tranasction.totalValue,
+        );
+        tranasction.status = TransactionStatus.COMPLETED;
+        await tranasction.save()
+        return tranasction
+      } else if (updateStatusDto.status === TransactionStatus.CANCELLED) {
+        tranasction.status = TransactionStatus.CANCELLED;
+        await tranasction.save()
+        return tranasction
+      }
+    } catch (error) {
+      throw error
     }
   }
 }

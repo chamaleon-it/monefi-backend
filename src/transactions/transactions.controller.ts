@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Patch, Post, Query, UseGuards } from '@nestjs/common';
 import { TransactionsService } from './transactions.service';
 import { GetUser } from 'src/auth/decorators/get-user.decorator';
 import { JWTUserInterface } from 'src/interface/jwt-user.interface';
@@ -6,6 +6,10 @@ import { BuyStockOrCrypto } from './dto/buy-stock-or-crypto';
 import { InvestmentType } from 'src/enum/investment-type.enum';
 import { JwtAuthGuard } from 'src/auth/guards/roles.guard';
 import { GetAllTransactions } from './dto/get-all-transactions.dto';
+import { RolesGuard } from 'src/auth/guards/ jwt-auth.guard';
+import { Roles } from 'src/auth/decorators/roles.decorator';
+import { UserRoles } from 'src/enum/user.enum';
+import { UpdateStatusDto } from './dto/update-status.dto';
 
 @Controller('transactions')
 export class TransactionsController {
@@ -64,5 +68,12 @@ export class TransactionsController {
       pagination,
       message:"All tranasction retrived"
     }
+  }
+
+  @UseGuards(JwtAuthGuard,RolesGuard)
+  @Roles(UserRoles.ADMIN)
+  @Patch('/status')
+  async updateStatus(@Body() updateStatusDto:UpdateStatusDto){
+
   }
 }
