@@ -25,7 +25,7 @@ export class User {
   @Prop({ default: null, type: Date })
   lastLogin: Date | string;
 
-  @Prop({ default: 0 })
+  @Prop({ default: 15000 })
   balance: number;
 }
 
