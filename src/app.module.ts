@@ -9,6 +9,7 @@ import { AuthModule } from './auth/auth.module';
 import { BondsModule } from './bonds/bonds.module';
 import { TransactionsModule } from './transactions/transactions.module';
 import { PortfolioModule } from './portfolio/portfolio.module';
+import { ApplicationFormModule } from './application_form/application_form.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { PortfolioModule } from './portfolio/portfolio.module';
     BondsModule,
     TransactionsModule,
     PortfolioModule,
+    ApplicationFormModule,
   ],
   controllers: [AppController],
   providers: [AppService],
