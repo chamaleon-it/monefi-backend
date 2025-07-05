@@ -145,8 +145,16 @@ export class CreateApplicationDto {
     | 'Driving Licence'
     | 'Email Identification';
 
+    @IsOptional()
+    @IsString()
+    identityVerificationFile:string
+
   @IsIn(['Utility Bill', 'Driving Licence', 'Email Proof of Address'])
   proofOfAddress: 'Utility Bill' | 'Driving Licence' | 'Email Proof of Address';
+
+  @IsOptional()
+    @IsString()
+    proofOfAddressFile:string
 
   @IsIn([
     'Savings',
