@@ -133,10 +133,16 @@ export class Application {
   })
   identityVerification: string;
 
+  @Prop()
+  identityVerificationFile?: string;
+
   @Prop({
     enum: ['Utility Bill', 'Driving Licence', 'Email Proof of Address'],
   })
-  proofOfAddress: string;
+  proofOfAddress?: string;
+
+  @Prop()
+  proofOfAddressFile?: string;
 
   @Prop({
     enum: ['Savings', 'Growth', 'Income', 'Retirement', 'Business account', 'Other'],
