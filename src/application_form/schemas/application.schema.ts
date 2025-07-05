@@ -142,7 +142,7 @@ export class Application {
   proofOfAddress?: string;
 
   @Prop()
-  proofOfAddressFile?:string;
+  proofOfAddressFile?: string;
 
   @Prop({
     enum: ['Savings', 'Growth', 'Income', 'Retirement', 'Business account', 'Other'],
