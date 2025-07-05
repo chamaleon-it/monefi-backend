@@ -147,14 +147,14 @@ export class CreateApplicationDto {
 
     @IsOptional()
     @IsString()
-    identityVerificationFile:string
+    identityVerificationFile?: string;
 
   @IsIn(['Utility Bill', 'Driving Licence', 'Email Proof of Address'])
   proofOfAddress: 'Utility Bill' | 'Driving Licence' | 'Email Proof of Address';
 
   @IsOptional()
-    @IsString()
-    proofOfAddressFile:string
+  @IsString()
+  proofOfAddressFile?: string;
 
   @IsIn([
     'Savings',

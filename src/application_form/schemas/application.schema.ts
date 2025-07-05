@@ -134,7 +134,7 @@ export class Application {
   identityVerification: string;
 
   @Prop()
-  identityVerificationFile:string
+  identityVerificationFile?: string;
 
   @Prop({
     enum: ['Utility Bill', 'Driving Licence', 'Email Proof of Address'],
