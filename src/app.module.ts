@@ -10,9 +10,16 @@ import { BondsModule } from './bonds/bonds.module';
 import { TransactionsModule } from './transactions/transactions.module';
 import { PortfolioModule } from './portfolio/portfolio.module';
 import { ApplicationFormModule } from './application_form/application_form.module';
+import { UploadsModule } from './uploads/uploads.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'uploads'),
+      serveRoot: '/uploads', // Use serveRoot for static files like images
+    }),
     ConfigModule.forRoot({
       load: [configuration],
     }),
@@ -23,6 +30,7 @@ import { ApplicationFormModule } from './application_form/application_form.modul
     TransactionsModule,
     PortfolioModule,
     ApplicationFormModule,
+    UploadsModule
   ],
   controllers: [AppController],
   providers: [AppService],
