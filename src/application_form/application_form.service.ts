@@ -18,14 +18,14 @@ export class ApplicationFormService {
     try {
       const application =
         await this.applicationModel.create(createApplicationDto);
-      await this.emailService.sendEmail({
-        email: createApplicationDto.email,
-        name:
-          createApplicationDto.firstName + ' ' + createApplicationDto.lastName,
-        subject:
-          'Thank you for your application. We value your interest in this opportunity.',
-        htmlbody: ThankYouEmail,
-      });
+      // await this.emailService.sendEmail({
+      //   email: createApplicationDto.email,
+      //   name:
+      //     createApplicationDto.firstName + ' ' + createApplicationDto.lastName,
+      //   subject:
+      //     'Thank you for your application. We value your interest in this opportunity.',
+      //   htmlbody: ThankYouEmail,
+      // });
       return application;
     } catch (error) {
       throw error;
