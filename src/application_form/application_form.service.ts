@@ -4,17 +4,28 @@ import { Application } from './schemas/application.schema';
 import mongoose, { Model } from 'mongoose';
 import { CreateApplicationDto } from './dto/create-application';
 import { GetApplicationFormDto } from './dto/get-application-form-dto';
+import { EmailService } from 'src/email/email.service';
+import { ThankYouEmail } from './template/ThankYouEmail';
 
 @Injectable()
 export class ApplicationFormService {
   constructor(
     @InjectModel(Application.name) private applicationModel: Model<Application>,
+    private readonly emailService: EmailService,
   ) {}
 
   async createApplication(createApplicationDto: CreateApplicationDto) {
     try {
       const application =
         await this.applicationModel.create(createApplicationDto);
+      await this.emailService.sendEmail({
+        email: createApplicationDto.email,
+        name:
+          createApplicationDto.firstName + ' ' + createApplicationDto.lastName,
+        subject:
+          'Thank you for your application. We value your interest in this opportunity.',
+        htmlbody: ThankYouEmail,
+      });
       return application;
     } catch (error) {
       throw error;
@@ -25,10 +36,12 @@ export class ApplicationFormService {
     const { limit = 10, page = 1 } = getApplicationFormDto;
     const skip = (page - 1) * limit;
     try {
-      const total = await this.applicationModel.countDocuments({deletedAt:null});
+      const total = await this.applicationModel.countDocuments({
+        deletedAt: null,
+      });
       const totalPage = Math.ceil(total / limit);
       const applications = await this.applicationModel
-        .find({deletedAt:null})
+        .find({ deletedAt: null })
         .skip(skip)
         .limit(limit)
         .sort('-createdAt')
@@ -54,10 +67,10 @@ export class ApplicationFormService {
       if (application.deletedAt)
         throw new BadRequestException('Application already deleted.');
       application.deletedAt = new Date();
-      await application.save()
-      return application
+      await application.save();
+      return application;
     } catch (error) {
-        throw error
+      throw error;
     }
   }
 }

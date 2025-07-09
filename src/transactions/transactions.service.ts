@@ -82,7 +82,9 @@ export class TransactionsService {
 
   async updateStatus(updateStatusDto: UpdateStatusDto) {
     try {
-      const tranasction = await this.transactionModel.findById(updateStatusDto.id);
+      const tranasction = await this.transactionModel.findById(
+        updateStatusDto.id,
+      );
       if (!tranasction) throw new NotFoundException('Transaction not found.');
       if (tranasction.status !== TransactionStatus.PENDING)
         throw new BadRequestException(
