@@ -5,4 +5,8 @@ export default () => ({
     accessToken: 'dsfsfsgsag',
     refreshToken: 'fafhablrebglebku',
   },
+  zepto: {
+    url: process.env.ZEPTO_URL as string,
+    token: process.env.ZEPTO_TOKEN as string,
+  },
 });

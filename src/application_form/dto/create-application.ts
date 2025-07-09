@@ -82,8 +82,8 @@ class BankAccountDetailsDto {
   @IsString() bankName: string;
   @IsString() branchName: string;
   @IsString() accountName: string;
-  @IsString() bic_swift: string;
-  @IsString() iban: string;
+  @IsString() accountNumber: string;
+  @IsString() sortCode: string;
 }
 
 class NextOfKinDto {
@@ -114,12 +114,14 @@ export class CreateApplicationDto {
   @IsString() mobilePhone: string;
 
   @Matches(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/, {
-    message: 'Password must be at least 8 characters, include one letter and one number',
+    message:
+      'Password must be at least 8 characters, include one letter and one number',
   })
   password: string;
 
   @Matches(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/, {
-    message: 'Confirm password must be at least 8 characters, include one letter and one number',
+    message:
+      'Confirm password must be at least 8 characters, include one letter and one number',
   })
   confirmPassword: string;
 
@@ -145,9 +147,9 @@ export class CreateApplicationDto {
     | 'Driving Licence'
     | 'Email Identification';
 
-    @IsOptional()
-    @IsString()
-    identityVerificationFile?: string;
+  @IsOptional()
+  @IsString()
+  identityVerificationFile?: string;
 
   @IsIn(['Utility Bill', 'Driving Licence', 'Email Proof of Address'])
   proofOfAddress: 'Utility Bill' | 'Driving Licence' | 'Email Proof of Address';

@@ -140,22 +140,21 @@ export class UsersService {
   }
 
   async getFullBalance() {
-  try {
-    const result = await this.userModal.aggregate([
-      {
-        $group: {
-          _id: null,
-          totalBalance: { $sum: "$balance" }
-        }
-      }
-    ]);
+    try {
+      const result = await this.userModal.aggregate([
+        {
+          $group: {
+            _id: null,
+            totalBalance: { $sum: '$balance' },
+          },
+        },
+      ]);
 
-    return result[0]?.totalBalance || 0;
-  } catch (error) {
-    throw error;
+      return result[0]?.totalBalance || 0;
+    } catch (error) {
+      throw error;
+    }
   }
-}
-
 
   async getUserByEmail(email: string) {
     return await this.userModal.findOne({ email }).select('+password').lean();

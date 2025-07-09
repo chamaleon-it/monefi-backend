@@ -61,7 +61,7 @@ export class PortfolioService {
 
       return data;
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 }

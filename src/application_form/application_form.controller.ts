@@ -1,4 +1,13 @@
-import { BadRequestException, Body, Controller, Delete, Get, Param, Post, UseGuards } from '@nestjs/common';
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { ApplicationFormService } from './application_form.service';
 import { CreateApplicationDto } from './dto/create-application';
 import { GetApplicationFormDto } from './dto/get-application-form-dto';
@@ -24,10 +33,12 @@ export class ApplicationFormController {
     };
   }
 
-  @UseGuards(JwtAuthGuard,RolesGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRoles.ADMIN)
   @Get()
-  async getAllApplicationForm(@Body() getApplicationFormDto: GetApplicationFormDto) {
+  async getAllApplicationForm(
+    @Body() getApplicationFormDto: GetApplicationFormDto,
+  ) {
     const { data, pagination } =
       await this.applicationFormService.getAllApplicationForm(
         getApplicationFormDto,
@@ -40,16 +51,16 @@ export class ApplicationFormController {
     };
   }
 
-  @UseGuards(JwtAuthGuard,RolesGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRoles.ADMIN)
-  @Delete(":id")
-  async delete(@Param("id") id:mongoose.Types.ObjectId){
-    if(!mongoose.isValidObjectId(id)) throw new BadRequestException("id is not valid")
-    const data = await this.applicationFormService.delete(id)
-  return {
-    message:"Application is deleted",
-    data
-  }
-
+  @Delete(':id')
+  async delete(@Param('id') id: mongoose.Types.ObjectId) {
+    if (!mongoose.isValidObjectId(id))
+      throw new BadRequestException('id is not valid');
+    const data = await this.applicationFormService.delete(id);
+    return {
+      message: 'Application is deleted',
+      data,
+    };
   }
 }

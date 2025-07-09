@@ -11,27 +11,25 @@ import { JWTUserInterface } from 'src/interface/jwt-user.interface';
 export class PortfolioController {
   constructor(private readonly portfolioService: PortfolioService) {}
 
-  @UseGuards(JwtAuthGuard,RolesGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRoles.USER)
   @Get()
-  async getPortfolio(@GetUser() user:JWTUserInterface){
-  const data  = await this.portfolioService.getPortfolio(user)  
-  return {
-    message:"You portfolio is retrived successfully",
-    data
-  }
+  async getPortfolio(@GetUser() user: JWTUserInterface) {
+    const data = await this.portfolioService.getPortfolio(user);
+    return {
+      message: 'You portfolio is retrived successfully',
+      data,
+    };
   }
 
-  @UseGuards(JwtAuthGuard,RolesGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRoles.ADMIN)
-  @Get("/statastics")
-  async statastics(){
-    const data = await this.portfolioService.statastics()
-    return{
-      message:"Portfolio statastics retrived",
-      data
-    }
+  @Get('/statastics')
+  async statastics() {
+    const data = await this.portfolioService.statastics();
+    return {
+      message: 'Portfolio statastics retrived',
+      data,
+    };
   }
-
-
 }

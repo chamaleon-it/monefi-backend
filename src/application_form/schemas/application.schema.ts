@@ -129,7 +129,11 @@ export class Application {
   };
 
   @Prop({
-    enum: ['International travel document', 'Driving Licence', 'Email Identification'],
+    enum: [
+      'International travel document',
+      'Driving Licence',
+      'Email Identification',
+    ],
   })
   identityVerification: string;
 
@@ -145,12 +149,22 @@ export class Application {
   proofOfAddressFile?: string;
 
   @Prop({
-    enum: ['Savings', 'Growth', 'Income', 'Retirement', 'Business account', 'Other'],
+    enum: [
+      'Savings',
+      'Growth',
+      'Income',
+      'Retirement',
+      'Business account',
+      'Other',
+    ],
   })
   purposeOfAccount: string;
 
   @Prop({
-    enum: ['Provide Existing Bank Account Details', 'Email Existing Bank Account Details'],
+    enum: [
+      'Provide Existing Bank Account Details',
+      'Email Existing Bank Account Details',
+    ],
   })
   bankAccount: string;
 
@@ -159,16 +173,16 @@ export class Application {
       bankName: String,
       branchName: String,
       accountName: String,
-      bic_swift: String,
-      iban: String,
+      accountNumber: String,
+      sortCode: String,
     },
   })
   bankAccountDetails?: {
     bankName: string;
     branchName: string;
     accountName: string;
-    bic_swift: string;
-    iban: string;
+    accountNumber: string;
+    sortCode: string;
   };
 
   @Prop({
@@ -186,8 +200,8 @@ export class Application {
     email: string;
   };
 
-  @Prop({type:Date,default:null})
-  deletedAt:Date |null
+  @Prop({ type: Date, default: null })
+  deletedAt: Date | null;
 }
 
 export const ApplicationSchema = SchemaFactory.createForClass(Application);
