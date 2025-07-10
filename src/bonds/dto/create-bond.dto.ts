@@ -41,7 +41,7 @@ export class CreateBondDto {
 
   // @IsDateString({}, { message: 'Maturity date must be a valid ISO date string.' })
  @IsOptional()
-  @Transform(({ value }: { value: string }) => new Date(value))
+  @Transform(({ value }: { value: string }) => !!value ? new Date(value) : null)
   meturityDate?: Date;
 
   @IsBoolean({ message: 'isPublic must be a boolean value (true or false).' })

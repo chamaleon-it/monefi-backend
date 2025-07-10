@@ -17,6 +17,9 @@ export class BondsController {
   @Roles(UserRoles.ADMIN)
   @Post()
   async createBond(@Body() createBondDto: CreateBondDto) {
+    if(!createBondDto.meturityDate ){
+      delete createBondDto.meturityDate
+    }
     const data = await this.bondsService.createBond(createBondDto);
     return {
       data,

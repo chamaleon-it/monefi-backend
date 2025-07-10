@@ -25,7 +25,7 @@ export const ThankYouEmail = `
               with any questions.
             </p>
             <p style="margin: 0 0 15px 0;">Best regards,</p>
-            <p style="margin: 0;">Administration Team<br>Monefi</p>
+            <p style="margin: 0;color:black">Administration Team<br>Monefi</p>
           </td>
         </tr>
         <!-- Footer spacing -->

@@ -80,7 +80,10 @@ class JointHolderDto {
 
 class BankAccountDetailsDto {
   @IsString() bankName: string;
-  @IsString() branchName: string;
+  
+  @IsOptional()
+  @IsString()
+   branchName?: string;
   @IsString() accountName: string;
   @IsString() accountNumber: string;
   @IsString() sortCode: string;

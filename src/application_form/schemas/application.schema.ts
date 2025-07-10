@@ -179,7 +179,7 @@ export class Application {
   })
   bankAccountDetails?: {
     bankName: string;
-    branchName: string;
+    branchName?: string;
     accountName: string;
     accountNumber: string;
     sortCode: string;
