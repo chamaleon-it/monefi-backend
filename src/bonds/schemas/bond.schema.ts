@@ -25,7 +25,7 @@ export class Bond {
   @Prop({ required: true, enum: CouponType })
   couponType: CouponType;
 
-  @Prop({ required: true, type: Date })
+  @Prop({ type: Date })
   meturityDate: Date;
 
   @Prop({ default: true })
