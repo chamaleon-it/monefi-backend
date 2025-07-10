@@ -4,6 +4,7 @@ import {
   IsEnum,
   IsNotEmpty,
   IsNumber,
+  IsOptional,
   IsString,
 } from 'class-validator';
 import { CouponFrequency } from 'src/enum/coupon-frequency.enum';
@@ -39,9 +40,9 @@ export class CreateBondDto {
   couponType: CouponType;
 
   // @IsDateString({}, { message: 'Maturity date must be a valid ISO date string.' })
-  @IsNotEmpty({ message: 'Maturity date is required.' })
+ @IsOptional()
   @Transform(({ value }: { value: string }) => new Date(value))
-  meturityDate: Date;
+  meturityDate?: Date;
 
   @IsBoolean({ message: 'isPublic must be a boolean value (true or false).' })
   isPublic?: boolean = true;
