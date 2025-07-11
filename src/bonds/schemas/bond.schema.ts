@@ -28,7 +28,7 @@ export class Bond {
   @Prop({ type: Date,default:null })
   meturityDate: Date | string;
 
-  @Prop({ default: true })
+  @Prop({ default: false })
   isPublic: boolean;
 }
 
