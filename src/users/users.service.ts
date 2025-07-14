@@ -14,11 +14,21 @@ import { UserRoles } from 'src/enum/user.enum';
 import { UserStatus } from 'src/enum/user-status.enum';
 // import { DeleteUserDto } from './dto/delete-user.dto';
 import { ChangePasswordDto } from './dto/change-password.dto';
+import { ForgotPasswordDto } from './dto/forgot-password.dto';
+import { JwtService } from '@nestjs/jwt';
+import configuration from 'src/config/configuration';
+import { EmailService } from 'src/email/email.service';
+import { ResetPasswordDto } from './dto/reset-password.dto';
+import { ResetPasswordEmail } from './template/ResetPasswordEmail';
 // import { JWTUserInterface } from 'src/interface/jwt-user.interface';
 
 @Injectable()
 export class UsersService {
-  constructor(@InjectModel(User.name) private userModal: Model<User>) {}
+  constructor(
+    @InjectModel(User.name) private userModal: Model<User>,
+    private jwtService: JwtService,
+    private readonly emailService: EmailService,
+  ) {}
 
   async createUser(createUserDto: CreateUserDto) {
     if (createUserDto.password !== createUserDto.confirmPassword) {
@@ -193,5 +203,75 @@ export class UsersService {
     refreshToken: string | null,
   ) {
     await this.userModal.updateOne({ _id: id }, { refreshToken });
+  }
+
+  async forgotPassword(forgotPasswordDto: ForgotPasswordDto) {
+    try {
+      const user = await this.userModal
+        .findOne({ email: forgotPasswordDto.email })
+        .lean();
+      
+      if (!user) {
+        throw new BadRequestException(
+          'This email address is not exist in our database, Please check your email address.',
+        );
+      }
+      const token = await this.jwtService.signAsync(
+        { id: user._id },
+        {
+          expiresIn: '2h',
+          secret: configuration().secret.forgotPassword,
+        },
+      );
+      const passwordResetLink = `${configuration().domain}/reset-password?token=${token}`;
+      await this.emailService.sendEmail({
+        email: user.email,
+        name: user.email,
+        subject: 'Password reset link from Monefi.',
+        htmlbody: ResetPasswordEmail(passwordResetLink),
+      });
+      return null;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async resetPassword(resetPasswordDto: ResetPasswordDto) {
+    try {
+      if (resetPasswordDto.password !== resetPasswordDto.confirmPassword)
+        throw new BadRequestException(
+          'Password and confirm password are not matching.',
+        );
+
+      if (!resetPasswordDto.token) {
+        throw new BadRequestException('Token is required.');
+      }
+
+      let decode: { id: string };
+      try {
+        decode = await this.jwtService.verifyAsync(
+          resetPasswordDto.token,
+          { secret: configuration().secret.forgotPassword },
+        );
+      } catch (err) {
+        throw new BadRequestException(
+          'Invalid or expired password reset token. Please initiate the ‘Forgot Password’ process again.'
+        );
+      }
+
+      if (!decode || !decode.id) {
+        throw new BadRequestException(
+          'The password reset link is no longer valid. Please initiate the ‘Forgot Password’ process again. The link is only valid for 2 hours.',
+        );
+      }
+
+      const user = await this.userModal.findById(decode.id);
+      if (!user) throw new BadRequestException('User not exist.');
+      user.password = await bcrypt.hash(resetPasswordDto.password, 10);
+      await user.save();
+      return null;
+    } catch (error) {
+      throw error;
+    }
   }
 }

@@ -23,6 +23,8 @@ import { RolesGuard } from 'src/auth/guards/ jwt-auth.guard';
 import { DeleteUserDto } from './dto/delete-user.dto';
 import { UserStatus } from 'src/enum/user-status.enum';
 import { ChangePasswordDto } from './dto/change-password.dto';
+import { ForgotPasswordDto } from './dto/forgot-password.dto';
+import { ResetPasswordDto } from './dto/reset-password.dto';
 
 @Controller('users')
 export class UsersController {
@@ -116,4 +118,25 @@ export class UsersController {
       message: 'Password has changed successfully',
     };
   }
+
+  
+  @Post('forgot-password')
+  async forgotPassword(@Body() forgotPasswordDto:ForgotPasswordDto){
+    const data = await this.usersService.forgotPassword(forgotPasswordDto)
+    return {
+      message:"Password reset link has shared to to your email address.",
+      data
+    }
+  }
+
+
+  @Post('/reset-password')
+  async resetPassword(@Body() resetPasswordDto:ResetPasswordDto){
+    const data = await this.usersService.resetPassword(resetPasswordDto)
+    return {
+      message:"Password has reseted successfully",
+      data
+    }
+  }
+
 }

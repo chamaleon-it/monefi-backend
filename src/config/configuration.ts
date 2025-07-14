@@ -4,9 +4,11 @@ export default () => ({
   secret: {
     accessToken: 'dsfsfsgsag',
     refreshToken: 'fafhablrebglebku',
+    forgotPassword:"ankfvjnaiobanoibusv "
   },
   zepto: {
     url: process.env.ZEPTO_URL as string,
     token: process.env.ZEPTO_TOKEN as string,
   },
+  domain: "https://monefi.co.uk" //"http://localhost:3000"
 });
