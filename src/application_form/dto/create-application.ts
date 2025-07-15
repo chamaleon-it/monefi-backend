@@ -116,13 +116,13 @@ export class CreateApplicationDto {
   @IsString() homePhone: string;
   @IsString() mobilePhone: string;
 
-  @Matches(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/, {
+  @Matches(/^(?=.*[A-Za-z])(?=.*\d).{8,}$/, {
     message:
       'Password must be at least 8 characters, include one letter and one number',
   })
   password: string;
 
-  @Matches(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/, {
+  @Matches(/^(?=.*[A-Za-z])(?=.*\d).{8,}$/, {
     message:
       'Confirm password must be at least 8 characters, include one letter and one number',
   })
