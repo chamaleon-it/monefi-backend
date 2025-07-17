@@ -1,11 +1,13 @@
 import { Transform } from 'class-transformer';
 import {
   IsBoolean,
+  IsDate,
   IsEnum,
   IsNotEmpty,
   IsNumber,
   IsOptional,
   IsString,
+  ValidateIf,
 } from 'class-validator';
 import { CouponFrequency } from 'src/enum/coupon-frequency.enum';
 import { CouponType } from 'src/enum/coupon-type.enum';
@@ -40,9 +42,11 @@ export class CreateBondDto {
   couponType: CouponType;
 
   // @IsDateString({}, { message: 'Maturity date must be a valid ISO date string.' })
- @IsOptional()
-  @Transform(({ value }: { value: string }) => !!value ? new Date(value) : null)
-  meturityDate?: Date;
+@IsOptional()
+  @Transform(({ value }: { value: string }) => value ? new Date(value) : null)
+  @ValidateIf((o) => o.meturityDate === null || !isNaN(o.meturityDate?.getTime()))
+  @IsDate()
+  meturityDate?: Date | null;
 
   @IsBoolean({ message: 'isPublic must be a boolean value (true or false).' })
   isPublic?: boolean = true;
