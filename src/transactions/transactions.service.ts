@@ -29,10 +29,6 @@ export class TransactionsService {
       const user = await this.usersService.getUserById({
         id: buyStockOrCrypto.user,
       });
-      if (buyStockOrCrypto.totalValue > user.balance)
-        throw new BadRequestException(
-          "Low balance! You don't have enough funds to buy this purchase. Contact support to add more.",
-        );
 
       const transaction = await this.transactionModel.create(buyStockOrCrypto);
       return transaction;

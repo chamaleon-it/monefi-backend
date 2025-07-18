@@ -25,6 +25,8 @@ import { UserStatus } from 'src/enum/user-status.enum';
 import { ChangePasswordDto } from './dto/change-password.dto';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
+import mongoose from 'mongoose';
+import { CashDepositDto } from './dto/cash-deposit.dto';
 
 @Controller('users')
 export class UsersController {
@@ -135,6 +137,17 @@ export class UsersController {
     const data = await this.usersService.resetPassword(resetPasswordDto)
     return {
       message:"Password has reseted successfully",
+      data
+    }
+  }
+
+  @UseGuards(JwtAuthGuard,RolesGuard)
+  @Roles(UserRoles.ADMIN)
+  @Post(":id/deposit")
+  async cashDeposit(@Param("id") id:mongoose.Types.ObjectId,@Body() cashDepositDto:CashDepositDto,@GetUser() user:JWTUserInterface){
+    const data = await this.usersService.cashDeposit(id,cashDepositDto,user)
+    return {
+      message:"Cash deposited successfully.",
       data
     }
   }

@@ -20,6 +20,8 @@ import configuration from 'src/config/configuration';
 import { EmailService } from 'src/email/email.service';
 import { ResetPasswordDto } from './dto/reset-password.dto';
 import { ResetPasswordEmail } from './template/ResetPasswordEmail';
+import { CashDepositDto } from './dto/cash-deposit.dto';
+import { JWTUserInterface } from 'src/interface/jwt-user.interface';
 // import { JWTUserInterface } from 'src/interface/jwt-user.interface';
 
 @Injectable()
@@ -274,4 +276,19 @@ export class UsersService {
       throw error;
     }
   }
+
+    async cashDeposit(id:mongoose.Types.ObjectId,cashDepositDto:CashDepositDto,depositeder:JWTUserInterface){
+      try {
+        const user = await this.userModal.findById(id)
+        if(!user){
+          throw new BadRequestException("User not found.")
+        }
+        user.balance = user.balance + cashDepositDto.amount
+        user.depositHistory.push({amount:cashDepositDto.amount,date:new Date(),depositedBy:depositeder.id})
+        await user.save()
+        return null
+      } catch (error) {
+        throw error
+      }
+    }
 }
