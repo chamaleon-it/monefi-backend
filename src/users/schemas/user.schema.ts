@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument } from 'mongoose';
+import mongoose, { HydratedDocument } from 'mongoose';
 import { UserStatus } from 'src/enum/user-status.enum';
 import { UserRoles } from 'src/enum/user.enum';
 
@@ -27,6 +27,20 @@ export class User {
 
   @Prop({ default: 0 })
   balance: number;
+
+  @Prop({
+    default:[],
+    type:[{
+      amount:Number,
+      date:Date,
+      depositedBy:mongoose.Schema.Types.ObjectId
+    }]
+  })
+  depositHistory:{
+    amount:number,
+    date:Date,
+    depositedBy:mongoose.Types.ObjectId
+  }[]
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

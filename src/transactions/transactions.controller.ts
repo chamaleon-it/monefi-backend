@@ -65,8 +65,7 @@ export class TransactionsController {
   @Roles(UserRoles.ADMIN)
   @Post('/invest')
   async invest(@Body() buyStockOrCrypto: BuyStockOrCrypto) {
-    buyStockOrCrypto.totalValue =
-      buyStockOrCrypto.quantity * buyStockOrCrypto.unitPrice;
+    buyStockOrCrypto.totalValue = buyStockOrCrypto.quantity * buyStockOrCrypto.unitPrice;
     const data =
       await this.transactionsService.buyStockOrCrypto(buyStockOrCrypto);
     return {
