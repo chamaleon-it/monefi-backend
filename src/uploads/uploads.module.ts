@@ -23,6 +23,9 @@ import { diskStorage } from 'multer';
             cb(null, `${file.fieldname}-${uniqueSuffix}${ext}`);
           },
         }),
+        limits: {
+      fileSize: 15 * 1024 * 1024, // 15 MB in bytes
+    },
       }),
     }),
   ],
