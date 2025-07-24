@@ -6,6 +6,7 @@ import {
   Get,
   Param,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { ApplicationFormService } from './application_form.service';
@@ -33,11 +34,11 @@ export class ApplicationFormController {
     };
   }
 
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(UserRoles.ADMIN)
+  // @UseGuards(JwtAuthGuard, RolesGuard)
+  // @Roles(UserRoles.ADMIN)
   @Get()
   async getAllApplicationForm(
-    @Body() getApplicationFormDto: GetApplicationFormDto,
+    @Query() getApplicationFormDto: GetApplicationFormDto,
   ) {
     const { data, pagination } =
       await this.applicationFormService.getAllApplicationForm(
