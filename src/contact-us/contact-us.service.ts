@@ -20,17 +20,17 @@ export class ContactUsService {
         phone: contactUsDto.phoneNumber,
       }),
     });
-      await this.emailService.sendEmail({
-      name: `Monefi Developer`,
-      email: 'muhammed916rashid@gmail.com', 
-      subject: `New message form ${contactUsDto.firstName} ${contactUsDto.lastName}`,
-      htmlbody: ContactFormDetailsEmail({
-        name: `${contactUsDto.firstName} ${contactUsDto.lastName}`,
-        email: contactUsDto.email,
-        message: contactUsDto.message,
-        phone: contactUsDto.phoneNumber,
-      }),
-    });
+    //   await this.emailService.sendEmail({
+    //   name: `Monefi Developer`,
+    //   email: '', 
+    //   subject: `New message form ${contactUsDto.firstName} ${contactUsDto.lastName}`,
+    //   htmlbody: ContactFormDetailsEmail({
+    //     name: `${contactUsDto.firstName} ${contactUsDto.lastName}`,
+    //     email: contactUsDto.email,
+    //     message: contactUsDto.message,
+    //     phone: contactUsDto.phoneNumber,
+    //   }),
+    // });
     return null;
   }
 }
