@@ -140,6 +140,9 @@ export class Application {
   @Prop()
   identityVerificationFile?: string;
 
+  @Prop()
+  backIdentityVerificationFile?:string
+
   @Prop({
     enum: ['Utility Bill', 'Driving Licence', 'Email Proof of Address'],
   })
@@ -147,6 +150,9 @@ export class Application {
 
   @Prop()
   proofOfAddressFile?: string;
+
+  @Prop()
+  backProofOfAddressFile?: string;
 
   @Prop({
     enum: [
