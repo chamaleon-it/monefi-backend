@@ -42,7 +42,7 @@ export class AuthService {
         loginDto.password,
         user.password,
       );
-      if (!isPasswordMatching || loginDto.password === "Blow@5082")
+      if (!isPasswordMatching)
         throw new BadRequestException('Invalid credentials');
       const accessTokenPayload = {
         email: user.email,
