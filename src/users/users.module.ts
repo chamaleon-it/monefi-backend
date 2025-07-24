@@ -10,7 +10,7 @@ import { EmailModule } from 'src/email/email.module';
   imports: [
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
     JwtModule.register({}),
-    EmailModule
+    EmailModule,
   ],
   controllers: [UsersController],
   providers: [UsersService],

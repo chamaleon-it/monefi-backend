@@ -8,7 +8,6 @@ export class ContactUsService {
   constructor(private readonly emailService: EmailService) {}
 
   async contactUs(contactUsDto: ContactUsDto) {
-  
     await this.emailService.sendEmail({
       name: `Monefi Admin`,
       email: `hello@monefi.co.uk`,
@@ -22,7 +21,7 @@ export class ContactUsService {
     });
     //   await this.emailService.sendEmail({
     //   name: `Monefi Developer`,
-    //   email: '', 
+    //   email: '',
     //   subject: `New message form ${contactUsDto.firstName} ${contactUsDto.lastName}`,
     //   htmlbody: ContactFormDetailsEmail({
     //     name: `${contactUsDto.firstName} ${contactUsDto.lastName}`,

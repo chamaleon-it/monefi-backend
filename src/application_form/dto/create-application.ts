@@ -1,7 +1,6 @@
 import {
   IsString,
   IsEmail,
-  IsEnum,
   IsOptional,
   ValidateNested,
   IsDateString,
@@ -80,10 +79,10 @@ class JointHolderDto {
 
 class BankAccountDetailsDto {
   @IsString() bankName: string;
-  
+
   @IsOptional()
   @IsString()
-   branchName?: string;
+  branchName?: string;
   @IsString() accountName: string;
   @IsString() accountNumber: string;
   @IsString() sortCode: string;
@@ -164,7 +163,7 @@ export class CreateApplicationDto {
   @IsString()
   proofOfAddressFile?: string;
 
-   @IsOptional()
+  @IsOptional()
   @IsString()
   backProofOfAddressFile?: string;
 

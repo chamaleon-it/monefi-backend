@@ -13,7 +13,7 @@ export class UploadsController {
 
   @Post()
   @UseInterceptors(FileInterceptor('file'))
-  async upload(@UploadedFile() file: Express.Multer.File) {
+  upload(@UploadedFile() file: Express.Multer.File) {
     const { filename } = this.uploadsService.handleFile(file);
     return {
       data: `/uploads/${filename}`,

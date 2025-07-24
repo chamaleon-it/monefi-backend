@@ -1,8 +1,8 @@
 export const ContactFormDetailsEmail = (data: {
-  name: string
-  email: string
-  phone: string
-  message: string
+  name: string;
+  email: string;
+  phone: string;
+  message: string;
 }) => `
 <table width="600" cellpadding="0" cellspacing="0" border="0" style="padding: 20px 0; margin: 0 auto;">
   <tr>
@@ -91,4 +91,4 @@ export const ContactFormDetailsEmail = (data: {
     </td>
   </tr>
 </table>
-`
+`;

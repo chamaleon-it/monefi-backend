@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument, SchemaTypes, Types } from 'mongoose';
+import { HydratedDocument } from 'mongoose';
 
 export type ApplicationDocument = HydratedDocument<Application>;
 
@@ -141,7 +141,7 @@ export class Application {
   identityVerificationFile?: string;
 
   @Prop()
-  backIdentityVerificationFile?:string
+  backIdentityVerificationFile?: string;
 
   @Prop({
     enum: ['Utility Bill', 'Driving Licence', 'Email Proof of Address'],

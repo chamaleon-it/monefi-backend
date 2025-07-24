@@ -7,11 +7,11 @@ export class ContactUsController {
   constructor(private readonly contactUsService: ContactUsService) {}
 
   @Post()
-  async contactUs(@Body() contactUsDto:ContactUsDto){
-    const data = await this.contactUsService.contactUs(contactUsDto)
+  async contactUs(@Body() contactUsDto: ContactUsDto) {
+    const data = await this.contactUsService.contactUs(contactUsDto);
     return {
       data,
-      message:"Thank you."
-    }
+      message: 'Thank you.',
+    };
   }
 }

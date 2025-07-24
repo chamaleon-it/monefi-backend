@@ -212,7 +212,7 @@ export class UsersService {
       const user = await this.userModal
         .findOne({ email: forgotPasswordDto.email })
         .lean();
-      
+
       if (!user) {
         throw new BadRequestException(
           'This email address is not exist in our database, Please check your email address.',
@@ -251,13 +251,13 @@ export class UsersService {
 
       let decode: { id: string };
       try {
-        decode = await this.jwtService.verifyAsync(
-          resetPasswordDto.token,
-          { secret: configuration().secret.forgotPassword },
-        );
+        decode = await this.jwtService.verifyAsync(resetPasswordDto.token, {
+          secret: configuration().secret.forgotPassword,
+        });
       } catch (err) {
+        console.log(err);
         throw new BadRequestException(
-          'Invalid or expired password reset token. Please initiate the ‘Forgot Password’ process again.'
+          'Invalid or expired password reset token. Please initiate the ‘Forgot Password’ process again.',
         );
       }
 
@@ -277,18 +277,26 @@ export class UsersService {
     }
   }
 
-    async cashDeposit(id:mongoose.Types.ObjectId,cashDepositDto:CashDepositDto,depositeder:JWTUserInterface){
-      try {
-        const user = await this.userModal.findById(id)
-        if(!user){
-          throw new BadRequestException("User not found.")
-        }
-        user.balance = user.balance + cashDepositDto.amount
-        user.depositHistory.push({amount:cashDepositDto.amount,date:new Date(),depositedBy:depositeder.id})
-        await user.save()
-        return null
-      } catch (error) {
-        throw error
+  async cashDeposit(
+    id: mongoose.Types.ObjectId,
+    cashDepositDto: CashDepositDto,
+    depositeder: JWTUserInterface,
+  ) {
+    try {
+      const user = await this.userModal.findById(id);
+      if (!user) {
+        throw new BadRequestException('User not found.');
       }
+      user.balance = user.balance + cashDepositDto.amount;
+      user.depositHistory.push({
+        amount: cashDepositDto.amount,
+        date: new Date(),
+        depositedBy: depositeder.id,
+      });
+      await user.save();
+      return null;
+    } catch (error) {
+      throw error;
     }
+  }
 }
