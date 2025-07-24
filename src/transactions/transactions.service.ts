@@ -14,7 +14,6 @@ import { GetAllTransactions } from './dto/get-all-transactions.dto';
 import { UpdateStatusDto } from './dto/update-status.dto';
 import { TransactionStatus } from 'src/enum/transaction-status.enum';
 import { PortfolioService } from 'src/portfolio/portfolio.service';
-import { InvestmentType } from 'src/enum/investment-type.enum';
 
 @Injectable()
 export class TransactionsService {
@@ -26,7 +25,7 @@ export class TransactionsService {
 
   async buyStockOrCrypto(buyStockOrCrypto: BuyStockOrCrypto) {
     try {
-      const user = await this.usersService.getUserById({
+      await this.usersService.getUserById({
         id: buyStockOrCrypto.user,
       });
 

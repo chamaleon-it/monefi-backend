@@ -29,18 +29,20 @@ export class User {
   balance: number;
 
   @Prop({
-    default:[],
-    type:[{
-      amount:Number,
-      date:Date,
-      depositedBy:mongoose.Schema.Types.ObjectId
-    }]
+    default: [],
+    type: [
+      {
+        amount: Number,
+        date: Date,
+        depositedBy: mongoose.Schema.Types.ObjectId,
+      },
+    ],
   })
-  depositHistory:{
-    amount:number,
-    date:Date,
-    depositedBy:mongoose.Types.ObjectId
-  }[]
+  depositHistory: {
+    amount: number;
+    date: Date;
+    depositedBy: mongoose.Types.ObjectId;
+  }[];
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

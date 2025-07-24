@@ -65,7 +65,8 @@ export class TransactionsController {
   @Roles(UserRoles.ADMIN)
   @Post('/invest')
   async invest(@Body() buyStockOrCrypto: BuyStockOrCrypto) {
-    buyStockOrCrypto.totalValue = buyStockOrCrypto.quantity * buyStockOrCrypto.unitPrice;
+    buyStockOrCrypto.totalValue =
+      buyStockOrCrypto.quantity * buyStockOrCrypto.unitPrice;
     const data =
       await this.transactionsService.buyStockOrCrypto(buyStockOrCrypto);
     return {
@@ -76,7 +77,7 @@ export class TransactionsController {
   }
 
   @Post('bond')
-  async buyBond(@GetUser() user: JWTUserInterface) {
+  buyBond(@GetUser() user: JWTUserInterface) {
     console.log(user);
   }
 

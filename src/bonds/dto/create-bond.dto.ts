@@ -42,9 +42,11 @@ export class CreateBondDto {
   couponType: CouponType;
 
   // @IsDateString({}, { message: 'Maturity date must be a valid ISO date string.' })
-@IsOptional()
-  @Transform(({ value }: { value: string }) => value ? new Date(value) : null)
-  @ValidateIf((o) => o.meturityDate === null || !isNaN(o.meturityDate?.getTime()))
+  @IsOptional()
+  @Transform(({ value }: { value: string }) => (value ? new Date(value) : null))
+  @ValidateIf(
+    (o) => o.meturityDate === null || !isNaN(o.meturityDate?.getTime()),
+  )
   @IsDate()
   meturityDate?: Date | null;
 

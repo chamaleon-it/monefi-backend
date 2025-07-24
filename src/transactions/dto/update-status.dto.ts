@@ -1,6 +1,5 @@
-import { Transform } from 'class-transformer';
-import { IsEnum, isMongoId, IsMongoId, IsString } from 'class-validator';
-import mongoose, { Types } from 'mongoose';
+import { IsEnum, IsMongoId } from 'class-validator';
+import { Types } from 'mongoose';
 import { TransactionStatus } from 'src/enum/transaction-status.enum';
 
 export class UpdateStatusDto {

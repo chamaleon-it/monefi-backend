@@ -22,8 +22,6 @@ export class BondsService {
           'Bond with name or ISIN number already exists.',
         );
 
-        
-        
       const bond = await this.bondModel.create(createBondDto);
 
       return bond;

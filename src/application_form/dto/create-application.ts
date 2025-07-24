@@ -1,7 +1,6 @@
 import {
   IsString,
   IsEmail,
-  IsEnum,
   IsOptional,
   ValidateNested,
   IsDateString,
@@ -80,10 +79,10 @@ class JointHolderDto {
 
 class BankAccountDetailsDto {
   @IsString() bankName: string;
-  
+
   @IsOptional()
   @IsString()
-   branchName?: string;
+  branchName?: string;
   @IsString() accountName: string;
   @IsString() accountNumber: string;
   @IsString() sortCode: string;
@@ -153,6 +152,9 @@ export class CreateApplicationDto {
   @IsOptional()
   @IsString()
   identityVerificationFile?: string;
+  @IsOptional()
+  @IsString()
+  backIdentityVerificationFile?: string;
 
   @IsIn(['Utility Bill', 'Driving Licence', 'Email Proof of Address'])
   proofOfAddress: 'Utility Bill' | 'Driving Licence' | 'Email Proof of Address';
@@ -160,6 +162,10 @@ export class CreateApplicationDto {
   @IsOptional()
   @IsString()
   proofOfAddressFile?: string;
+
+  @IsOptional()
+  @IsString()
+  backProofOfAddressFile?: string;
 
   @IsIn([
     'Savings',

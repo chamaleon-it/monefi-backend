@@ -1,4 +1,4 @@
-export const ResetPasswordEmail = (link:string) => `
+export const ResetPasswordEmail = (link: string) => `
 <table width="600" cellpadding="0" cellspacing="0" border="0" style="padding: 20px 0; margin: 0 auto;">
   <tr>
     <td align="center">
@@ -54,4 +54,4 @@ export const ResetPasswordEmail = (link:string) => `
     </td>
   </tr>
 </table>
-`
+`;

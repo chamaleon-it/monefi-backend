@@ -121,35 +121,36 @@ export class UsersController {
     };
   }
 
-  
   @Post('forgot-password')
-  async forgotPassword(@Body() forgotPasswordDto:ForgotPasswordDto){
-    const data = await this.usersService.forgotPassword(forgotPasswordDto)
+  async forgotPassword(@Body() forgotPasswordDto: ForgotPasswordDto) {
+    const data = await this.usersService.forgotPassword(forgotPasswordDto);
     return {
-      message:"Password reset link has shared to to your email address.",
-      data
-    }
+      message: 'Password reset link has shared to to your email address.',
+      data,
+    };
   }
-
 
   @Post('/reset-password')
-  async resetPassword(@Body() resetPasswordDto:ResetPasswordDto){
-    const data = await this.usersService.resetPassword(resetPasswordDto)
+  async resetPassword(@Body() resetPasswordDto: ResetPasswordDto) {
+    const data = await this.usersService.resetPassword(resetPasswordDto);
     return {
-      message:"Password has reseted successfully",
-      data
-    }
+      message: 'Password has reseted successfully',
+      data,
+    };
   }
 
-  @UseGuards(JwtAuthGuard,RolesGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRoles.ADMIN)
-  @Post(":id/deposit")
-  async cashDeposit(@Param("id") id:mongoose.Types.ObjectId,@Body() cashDepositDto:CashDepositDto,@GetUser() user:JWTUserInterface){
-    const data = await this.usersService.cashDeposit(id,cashDepositDto,user)
+  @Post(':id/deposit')
+  async cashDeposit(
+    @Param('id') id: mongoose.Types.ObjectId,
+    @Body() cashDepositDto: CashDepositDto,
+    @GetUser() user: JWTUserInterface,
+  ) {
+    const data = await this.usersService.cashDeposit(id, cashDepositDto, user);
     return {
-      message:"Cash deposited successfully.",
-      data
-    }
+      message: 'Cash deposited successfully.',
+      data,
+    };
   }
-
 }
