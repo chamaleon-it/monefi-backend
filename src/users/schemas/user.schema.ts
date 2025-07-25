@@ -10,6 +10,9 @@ export class User {
   @Prop({ unique: true, required: true, lowercase: true, trim: true })
   email: string;
 
+  @Prop({required:true,trim:true})
+  name:string
+
   @Prop({ required: true, select: false })
   password: string;
 

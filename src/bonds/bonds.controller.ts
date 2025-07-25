@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { BondsService } from './bonds.service';
 import { JwtAuthGuard } from 'src/auth/guards/roles.guard';
 import { RolesGuard } from 'src/auth/guards/ jwt-auth.guard';
@@ -39,5 +47,15 @@ export class BondsController {
       data,
       pagination,
     };
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get(':isin')
+  async getBond(@Param('isin') isin: string) {
+    const data = await this.bondsService.getBond(isin)
+    return {
+      message:"Bond is retrived successfully.",
+      data
+    }
   }
 }
