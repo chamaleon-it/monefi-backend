@@ -51,9 +51,9 @@ export class TransactionsService {
 
       const skip = (page - 1) * limit;
       const total = await this.transactionModel.countDocuments(filter);
-      const bonds = await this.transactionModel
+      const transactions = await this.transactionModel
         .find(filter)
-        .populate('user', 'email')
+        .populate('user', 'email name')
         .skip(skip)
         .limit(limit)
         .sort('-createdAt')
@@ -62,7 +62,7 @@ export class TransactionsService {
       const totalPage = Math.ceil(total / limit);
 
       return {
-        data: bonds,
+        data: transactions,
         pagination: {
           total,
           page,
@@ -92,7 +92,7 @@ export class TransactionsService {
         });
         if (tranasction.totalValue > user.balance)
           throw new BadRequestException(
-            "Low balance! You don't have enough funds to buy this purchase.",
+            "Low balance! Don't have enough funds to buy this purchase.",
           );
         await this.usersService.debitUserBalance(
           user._id,
