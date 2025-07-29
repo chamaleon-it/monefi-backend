@@ -84,8 +84,8 @@ export class Application {
   @Prop() occupationCategory: string;
   @Prop() homePhone: string;
   @Prop() mobilePhone: string;
-  @Prop() password: string;
-  @Prop() confirmPassword: string;
+  // @Prop() password: string;
+  // @Prop() confirmPassword: string;
   @Prop() country: string;
   @Prop() houseNumberOrName: string;
   @Prop() streetName: string;
