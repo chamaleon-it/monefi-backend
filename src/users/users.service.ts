@@ -151,7 +151,7 @@ export class UsersService {
     }
   }
 
-  async getFullBalance() {
+  async getFullBalance(): Promise<number> {
     try {
       const result = await this.userModal.aggregate([
         {
@@ -162,7 +162,7 @@ export class UsersService {
         },
       ]);
 
-      return result[0]?.totalBalance || 0;
+      return (result[0]?.totalBalance as number) || 0;
     } catch (error) {
       throw error;
     }

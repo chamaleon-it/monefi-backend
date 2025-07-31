@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument } from 'mongoose';
 import { InvestmentType } from 'src/enum/investment-type.enum';
+import { YesOrNoEnum } from 'src/enum/yes-or-no.enum';
 
 export type PortfolioDocument = HydratedDocument<Portfolio>;
 
@@ -33,6 +34,12 @@ export class Portfolio {
     ref: 'Transaction',
   })
   transaction: mongoose.Types.ObjectId;
+
+  @Prop({
+    default: 'Yes',
+    enum: YesOrNoEnum,
+  })
+  buyBack: YesOrNoEnum;
 }
 
 export const PortfolioSchema = SchemaFactory.createForClass(Portfolio);

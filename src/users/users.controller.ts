@@ -36,7 +36,7 @@ export class UsersController {
   async createUser(@Body() createUserDto: CreateUserDto) {
     const data = await this.usersService.createUser(createUserDto);
     return {
-      message: 'User Created',
+      message: 'User created successfully.',
       data,
     };
   }
@@ -70,7 +70,7 @@ export class UsersController {
   async getFullBalance() {
     const data = await this.usersService.getFullBalance();
     return {
-      message: 'Full balance retrived',
+      message: 'Full balance retrived.',
       data,
     };
   }
@@ -98,7 +98,7 @@ export class UsersController {
         status: UserStatus.DELETED,
       });
       return {
-        message: 'user deleted',
+        message: 'User is  deleted.',
         data,
       };
     }
@@ -117,7 +117,7 @@ export class UsersController {
     );
     return {
       data,
-      message: 'Password has changed successfully',
+      message: 'Password has changed successfully.',
     };
   }
 

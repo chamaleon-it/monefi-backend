@@ -52,10 +52,10 @@ export class BondsController {
   @UseGuards(JwtAuthGuard)
   @Get(':isin')
   async getBond(@Param('isin') isin: string) {
-    const data = await this.bondsService.getBond(isin)
+    const data = await this.bondsService.getBond(isin);
     return {
-      message:"Bond is retrived successfully.",
-      data
-    }
+      message: 'Bond is retrived successfully.',
+      data,
+    };
   }
 }

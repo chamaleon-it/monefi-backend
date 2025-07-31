@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Bond } from './schemas/bond.schema';
 import { Model } from 'mongoose';
@@ -63,17 +67,19 @@ export class BondsService {
     }
   }
 
-   async getBond(isin: string) {
+  async getBond(isin: string) {
     try {
-      const bond = await this.bondModel.findOne({isin}).select("-updatedAt -createdAt -isPublic -_id").lean()
-      if(!bond){
-        throw new NotFoundException("Bond is not found.")
+      const bond = await this.bondModel
+        .findOne({ isin })
+        .select('-updatedAt -createdAt -isPublic -_id')
+        .lean();
+      if (!bond) {
+        throw new NotFoundException('Bond is not found.');
       }
-      
-      return bond
 
+      return bond;
     } catch (error) {
-      throw error
+      throw error;
     }
-   }
+  }
 }
