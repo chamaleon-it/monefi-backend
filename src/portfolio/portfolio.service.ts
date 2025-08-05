@@ -1,10 +1,16 @@
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Portfolio } from './schemas/portfolio.schema';
 import { Model } from 'mongoose';
 import { AddToPortfolioDto } from './dto/add-to-portfolio';
 import { JWTUserInterface } from 'src/interface/jwt-user.interface';
 import { InvestmentType } from 'src/enum/investment-type.enum';
+import { ChangeBuyBackDto } from './dto/change-buyback.dto';
+import { UserRoles } from 'src/enum/user.enum';
 
 @Injectable()
 export class PortfolioService {
@@ -23,10 +29,18 @@ export class PortfolioService {
 
   async getPortfolio(user: JWTUserInterface) {
     try {
-      const portfolio = await this.portfolioModel
-        .find({ user: user.id })
+      const portfolioQuary = this.portfolioModel
+        .find()
         .sort('-createdAt')
         .lean();
+      if (user.role === UserRoles.USER) {
+        portfolioQuary.where({ user: user.id });
+      } else {
+        portfolioQuary.populate('user', 'name email');
+      }
+
+      const portfolio = await portfolioQuary;
+
       return portfolio;
     } catch (error) {
       throw error;
@@ -63,5 +77,20 @@ export class PortfolioService {
     } catch (error) {
       throw error;
     }
+  }
+
+  async changeBuyback(
+    user: JWTUserInterface,
+    changeBuyBackDto: ChangeBuyBackDto,
+  ): Promise<void> {
+    const portfolio = await this.portfolioModel.findById(changeBuyBackDto.id);
+    if (!portfolio)
+      throw new NotFoundException('This portfolio does not exist.');
+    if (portfolio.buyBack === changeBuyBackDto.buyBack)
+      throw new BadRequestException(
+        'The buyback for this portfolio has already been updated.',
+      );
+    portfolio.buyBack = changeBuyBackDto.buyBack;
+    await portfolio.save();
   }
 }
