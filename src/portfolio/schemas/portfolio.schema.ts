@@ -28,6 +28,9 @@ export class Portfolio {
   @Prop({ required: true, enum: InvestmentType })
   investmentType: InvestmentType;
 
+  @Prop({default:null,type:String})
+  certificate:null | string
+
   @Prop({
     required: true,
     type: mongoose.SchemaTypes.ObjectId,

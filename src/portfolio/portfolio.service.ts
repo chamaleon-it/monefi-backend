@@ -11,6 +11,7 @@ import { JWTUserInterface } from 'src/interface/jwt-user.interface';
 import { InvestmentType } from 'src/enum/investment-type.enum';
 import { ChangeBuyBackDto } from './dto/change-buyback.dto';
 import { UserRoles } from 'src/enum/user.enum';
+import { UpdateCertificateDto } from './dto/update-certificate.dto';
 
 @Injectable()
 export class PortfolioService {
@@ -91,6 +92,17 @@ export class PortfolioService {
         'The buyback for this portfolio has already been updated.',
       );
     portfolio.buyBack = changeBuyBackDto.buyBack;
+    await portfolio.save();
+  }
+
+  async updateCertificate(
+    updateCertificateDto: UpdateCertificateDto,
+  ): Promise<void> {
+    const portfolio = await this.portfolioModel.findById(
+      updateCertificateDto.id,
+    );
+    if (!portfolio) throw new NotFoundException('Portfolio not found');
+    portfolio.certificate = updateCertificateDto.file;
     await portfolio.save();
   }
 }

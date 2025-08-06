@@ -7,6 +7,7 @@ import { UserRoles } from 'src/enum/user.enum';
 import { GetUser } from 'src/auth/decorators/get-user.decorator';
 import { JWTUserInterface } from 'src/interface/jwt-user.interface';
 import { ChangeBuyBackDto } from './dto/change-buyback.dto';
+import { UpdateCertificateDto } from './dto/update-certificate.dto';
 
 @Controller('portfolio')
 export class PortfolioController {
@@ -47,6 +48,18 @@ export class PortfolioController {
     return {
       message: 'The buyback has been successfully updated.',
       data,
+    };
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRoles.ADMIN)
+  @Patch('/update_certificate')
+  async updateCertificate(@Body() updateCertificateDto: UpdateCertificateDto) {
+    const date =
+      await this.portfolioService.updateCertificate(updateCertificateDto);
+    return {
+      message: 'Portfolio certificate is updated.',
+      date,
     };
   }
 }
