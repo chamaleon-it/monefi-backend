@@ -12,6 +12,8 @@ import { InvestmentType } from 'src/enum/investment-type.enum';
 import { ChangeBuyBackDto } from './dto/change-buyback.dto';
 import { UserRoles } from 'src/enum/user.enum';
 import { UpdateCertificateDto } from './dto/update-certificate.dto';
+import { UpdateInterestDto } from './dto/update-inerest.dto';
+import { DeleteInterestDto } from './dto/delete-interest.dto';
 
 @Injectable()
 export class PortfolioService {
@@ -103,6 +105,25 @@ export class PortfolioService {
     );
     if (!portfolio) throw new NotFoundException('Portfolio not found');
     portfolio.certificate = updateCertificateDto.file;
+    await portfolio.save();
+  }
+
+  async updateInterest(updateInterestDto: UpdateInterestDto): Promise<void> {
+    const portfolio = await this.portfolioModel.findById(updateInterestDto.id);
+    if (!portfolio) throw new NotFoundException('Portfolio not found.');
+    portfolio.interest.push({
+      date: updateInterestDto.date,
+      amount: updateInterestDto.amount,
+    });
+    await portfolio.save();
+  }
+
+  async deleteInterest(deleteInterestDto: DeleteInterestDto): Promise<void> {
+    const portfolio = await this.portfolioModel.findById(deleteInterestDto.id);
+    if (!portfolio) throw new NotFoundException('Portfolio not found.');
+    portfolio.interest = portfolio.interest.filter(
+      (e: any) => e._id.toString() !== deleteInterestDto.interestId.toString(),
+    );
     await portfolio.save();
   }
 }

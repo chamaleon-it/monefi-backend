@@ -1,4 +1,11 @@
-import { Body, Controller, Get, Patch, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Patch,
+  UseGuards,
+} from '@nestjs/common';
 import { PortfolioService } from './portfolio.service';
 import { JwtAuthGuard } from 'src/auth/guards/roles.guard';
 import { RolesGuard } from 'src/auth/guards/ jwt-auth.guard';
@@ -8,6 +15,8 @@ import { GetUser } from 'src/auth/decorators/get-user.decorator';
 import { JWTUserInterface } from 'src/interface/jwt-user.interface';
 import { ChangeBuyBackDto } from './dto/change-buyback.dto';
 import { UpdateCertificateDto } from './dto/update-certificate.dto';
+import { UpdateInterestDto } from './dto/update-inerest.dto';
+import { DeleteInterestDto } from './dto/delete-interest.dto';
 
 @Controller('portfolio')
 export class PortfolioController {
@@ -60,6 +69,28 @@ export class PortfolioController {
     return {
       message: 'Portfolio certificate is updated.',
       date,
+    };
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRoles.ADMIN)
+  @Patch('/update_interest')
+  async updateInterest(@Body() updateInterestDto: UpdateInterestDto) {
+    const data = await this.portfolioService.updateInterest(updateInterestDto);
+    return {
+      message: 'Interest is updated.',
+      data,
+    };
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRoles.ADMIN)
+  @Patch('delete_interest')
+  async deleteInterest(@Body() deleteInterestDto: DeleteInterestDto) {
+    const data = await this.portfolioService.deleteInterest(deleteInterestDto);
+    return {
+      message: 'Interest is deleted successfully',
+      data,
     };
   }
 }
