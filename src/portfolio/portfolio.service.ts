@@ -12,7 +12,7 @@ import { InvestmentType } from 'src/enum/investment-type.enum';
 import { ChangeBuyBackDto } from './dto/change-buyback.dto';
 import { UserRoles } from 'src/enum/user.enum';
 import { UpdateCertificateDto } from './dto/update-certificate.dto';
-import { UpdateInterestDto } from './dto/update-inerest.dto';
+import { UpdateInterestDto } from './dto/update-interest.dto';
 import { DeleteInterestDto } from './dto/delete-interest.dto';
 
 @Injectable()

@@ -15,7 +15,7 @@ import { GetUser } from 'src/auth/decorators/get-user.decorator';
 import { JWTUserInterface } from 'src/interface/jwt-user.interface';
 import { ChangeBuyBackDto } from './dto/change-buyback.dto';
 import { UpdateCertificateDto } from './dto/update-certificate.dto';
-import { UpdateInterestDto } from './dto/update-inerest.dto';
+import { UpdateInterestDto } from './dto/update-interest.dto';
 import { DeleteInterestDto } from './dto/delete-interest.dto';
 
 @Controller('portfolio')
