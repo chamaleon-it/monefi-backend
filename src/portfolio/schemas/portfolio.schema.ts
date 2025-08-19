@@ -28,8 +28,8 @@ export class Portfolio {
   @Prop({ required: true, enum: InvestmentType })
   investmentType: InvestmentType;
 
-  @Prop({default:null,type:String})
-  certificate:null | string
+  @Prop({ default: null, type: String })
+  certificate: null | string;
 
   @Prop({
     required: true,
@@ -43,6 +43,20 @@ export class Portfolio {
     enum: YesOrNoEnum,
   })
   buyBack: YesOrNoEnum;
+
+  @Prop({
+    default: [],
+    type: [
+      {
+        date: Date,
+        amount: Number,
+      },
+    ],
+  })
+  interest: {
+    date: Date;
+    amount: number;
+  }[];
 }
 
 export const PortfolioSchema = SchemaFactory.createForClass(Portfolio);
