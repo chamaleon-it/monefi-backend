@@ -43,6 +43,11 @@ export class Transaction {
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Bond' })
   bond: mongoose.Types.ObjectId;
+
+  @Prop({ type: Date, default: Date.now, immutable: false })
+  createdAt: Date;
 }
 
 export const TransactionSchema = SchemaFactory.createForClass(Transaction);
+
+TransactionSchema.path('createdAt').immutable(false);

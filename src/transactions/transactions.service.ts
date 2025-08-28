@@ -14,6 +14,7 @@ import { GetAllTransactions } from './dto/get-all-transactions.dto';
 import { UpdateStatusDto } from './dto/update-status.dto';
 import { TransactionStatus } from 'src/enum/transaction-status.enum';
 import { PortfolioService } from 'src/portfolio/portfolio.service';
+import { UpdateTransactionDateDto } from './dto/update-transaction-date.dto';
 
 @Injectable()
 export class TransactionsService {
@@ -119,5 +120,31 @@ export class TransactionsService {
     } catch (error) {
       throw error;
     }
+  }
+
+  async updateDate(
+    updateTransactionDateDto: UpdateTransactionDateDto,
+  ): Promise<void> {
+    const { id, date } = updateTransactionDateDto;
+
+    const newDate = new Date(date);
+
+    const result = await this.transactionModel.findByIdAndUpdate(
+      id,
+      {
+        createdAt: newDate,
+        updatedAt: newDate,
+      },
+      {
+        new: true,
+        timestamps: false,
+        runValidators: true,
+      },
+    );
+
+    if (!result) {
+      throw new NotFoundException('Transaction not found.');
+    }
+
   }
 }

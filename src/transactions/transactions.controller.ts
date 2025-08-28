@@ -18,6 +18,7 @@ import { RolesGuard } from 'src/auth/guards/ jwt-auth.guard';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { UserRoles } from 'src/enum/user.enum';
 import { UpdateStatusDto } from './dto/update-status.dto';
+import { UpdateTransactionDateDto } from './dto/update-transaction-date.dto';
 
 @Controller('transactions')
 export class TransactionsController {
@@ -105,6 +106,22 @@ export class TransactionsController {
     const data = await this.transactionsService.updateStatus(updateStatusDto);
     return {
       message: 'Transaction status updated',
+      data,
+    };
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRoles.ADMIN)
+  @Patch('/update_date')
+  async updateDate(
+    @Body() updateTransactionDateDto: UpdateTransactionDateDto,
+  ): Promise<{ message: string; data: void }> {
+    const data = await this.transactionsService.updateDate(
+      updateTransactionDateDto,
+    );
+
+    return {
+      message: 'Transaction date  were updated',
       data,
     };
   }
