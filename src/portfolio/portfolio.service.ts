@@ -42,6 +42,7 @@ export class PortfolioService {
         portfolioQuary.populate('user', 'name email');
       }
 
+      portfolioQuary.populate('transaction', 'createdAt buyBackDate');
       const portfolio = await portfolioQuary;
 
       return portfolio;
