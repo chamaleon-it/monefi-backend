@@ -1,4 +1,6 @@
+import { Transform } from 'class-transformer';
 import {
+  IsDateString,
   IsEnum,
   IsMongoId,
   IsNumber,
@@ -28,6 +30,12 @@ export class BuyStockOrCrypto {
   @IsNumber({}, { message: 'Total value must be a valid number.' })
   @IsOptional() // Assuming you calculate this from quantity * unitPrice
   totalValue: number;
+
+  // Use IsDateString to validate the format
+@IsOptional()
+  @IsDateString({}, { message: 'Enter a valid buy back date string (e.g., YYYY-MM-DD).' })
+  @Transform(({ value }) => (value === '' ? undefined : value))
+  buyBackDate?: string; // The date is received as a string
 
   @IsEnum(InvestmentType, {
     message: `Investment type must be one of the following: ${Object.values(InvestmentType).join(', ')}.`,
