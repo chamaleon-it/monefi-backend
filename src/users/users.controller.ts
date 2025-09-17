@@ -27,6 +27,7 @@ import { ForgotPasswordDto } from './dto/forgot-password.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
 import mongoose from 'mongoose';
 import { CashDepositDto } from './dto/cash-deposit.dto';
+import { KycDto } from './dto/kyc.dto';
 
 @Controller('users')
 export class UsersController {
@@ -150,6 +151,18 @@ export class UsersController {
     const data = await this.usersService.cashDeposit(id, cashDepositDto, user);
     return {
       message: 'Cash deposited successfully.',
+      data,
+    };
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRoles.USER)
+  @Post('/kyc')
+  async kyc(@GetUser() user: JWTUserInterface, @Body() kycDto: KycDto) {
+    const data = await this.usersService.kyc(user, kycDto);
+    return {
+      message:
+        'Your KYC update request is being processed. Please allow up to 24 hours.',
       data,
     };
   }

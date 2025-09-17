@@ -22,6 +22,7 @@ import { ResetPasswordDto } from './dto/reset-password.dto';
 import { ResetPasswordEmail } from './template/ResetPasswordEmail';
 import { CashDepositDto } from './dto/cash-deposit.dto';
 import { JWTUserInterface } from 'src/interface/jwt-user.interface';
+import { KycDto } from './dto/kyc.dto';
 // import { JWTUserInterface } from 'src/interface/jwt-user.interface';
 
 @Injectable()
@@ -298,5 +299,16 @@ export class UsersService {
     } catch (error) {
       throw error;
     }
+  }
+
+  async kyc(user: JWTUserInterface, kycDto: KycDto) {
+    const found = await this.userModal.findById(user.id);
+    if (!found) {
+      throw new BadRequestException('user not found');
+    }
+    found.proofOfAddress = kycDto.proofOfAddress;
+    found.identityVerification = kycDto.identityVerification;
+    await found.save();
+    return found;
   }
 }

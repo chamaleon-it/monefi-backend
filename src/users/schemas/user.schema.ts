@@ -32,6 +32,36 @@ export class User {
   balance: number;
 
   @Prop({
+    type: {
+      proof: String,
+      file: String,
+    },
+    default: {
+      proof: null,
+      file: null,
+    },
+  })
+  proofOfAddress: {
+    proof: string;
+    file: string;
+  };
+
+  @Prop({
+    type: {
+      proof: String,
+      file: String,
+    },
+    default: {
+      proof: null,
+      file: null,
+    },
+  })
+  identityVerification: {
+    proof: string;
+    file: string;
+  };
+
+  @Prop({
     default: [],
     type: [
       {
