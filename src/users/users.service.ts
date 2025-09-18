@@ -22,6 +22,9 @@ import { ResetPasswordDto } from './dto/reset-password.dto';
 import { ResetPasswordEmail } from './template/ResetPasswordEmail';
 import { CashDepositDto } from './dto/cash-deposit.dto';
 import { JWTUserInterface } from 'src/interface/jwt-user.interface';
+import { KycDto } from './dto/kyc.dto';
+import { KycStatus } from 'src/enum/kyc-status.enum';
+import { UpdateKycDto } from './dto/update-kyc.dto';
 // import { JWTUserInterface } from 'src/interface/jwt-user.interface';
 
 @Injectable()
@@ -299,4 +302,35 @@ export class UsersService {
       throw error;
     }
   }
+
+  async kyc(user: JWTUserInterface, kycDto: KycDto) {
+    const found = await this.userModal.findById(user.id);
+    if (!found) {
+      throw new BadRequestException('user not found');
+    }
+    found.proofOfAddress = kycDto.proofOfAddress;
+    found.identityVerification = kycDto.identityVerification;
+    found.kycStatus = KycStatus.Pending;
+    await found.save();
+    return found;
+  }
+
+  async getKycStatus(id: mongoose.Types.ObjectId) {
+    const user = await this.userModal.findById(id).lean();
+    if (!user) {
+      throw new BadRequestException('User not found.');
+    }
+    return user.kycStatus || KycStatus.NotSubmitted;
+  }
+
+
+    async updateKycStatus(updateKycDto:UpdateKycDto){
+        const user = await this.userModal.findById(updateKycDto.id)
+        if(!user){
+          throw new BadRequestException("User not found")
+        }
+        user.kycStatus = updateKycDto.status
+        await user.save()
+        return user
+      }
 }
