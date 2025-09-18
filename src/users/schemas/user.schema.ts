@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument } from 'mongoose';
+import { KycStatus } from 'src/enum/kyc-status.enum';
 import { UserStatus } from 'src/enum/user-status.enum';
 import { UserRoles } from 'src/enum/user.enum';
 
@@ -61,6 +62,9 @@ export class User {
     file: string;
   };
 
+  @Prop({default:KycStatus.NotSubmitted,enum:KycStatus,required:true})
+  kycStatus: KycStatus
+
   @Prop({
     default: [],
     type: [
@@ -71,6 +75,7 @@ export class User {
       },
     ],
   })
+  
   depositHistory: {
     amount: number;
     date: Date;

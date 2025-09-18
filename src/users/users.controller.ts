@@ -28,6 +28,7 @@ import { ResetPasswordDto } from './dto/reset-password.dto';
 import mongoose from 'mongoose';
 import { CashDepositDto } from './dto/cash-deposit.dto';
 import { KycDto } from './dto/kyc.dto';
+import { UpdateKycDto } from './dto/update-kyc.dto';
 
 @Controller('users')
 export class UsersController {
@@ -72,6 +73,17 @@ export class UsersController {
     const data = await this.usersService.getFullBalance();
     return {
       message: 'Full balance retrived.',
+      data,
+    };
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRoles.USER)
+  @Get('/kyc_status')
+  async getKycStatus(@GetUser() user: JWTUserInterface) {
+    const data = await this.usersService.getKycStatus(user.id);
+    return {
+      message: 'User Kyc status fetched successfully',
       data,
     };
   }
@@ -166,4 +178,18 @@ export class UsersController {
       data,
     };
   }
+
+
+  @UseGuards(JwtAuthGuard,RolesGuard)
+  @Roles(UserRoles.ADMIN)
+  @Post("/update_status")
+    async updateKycStatus(@Body() updateKycDto:UpdateKycDto){
+      const data = await this.usersService.updateKycStatus(updateKycDto)
+      return {
+        message:"User KYC status is updated.",
+        data
+      }
+    }
+  
+  
 }
