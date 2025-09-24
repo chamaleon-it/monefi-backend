@@ -20,8 +20,12 @@ export class BuyStockOrCrypto {
   @IsNumber({}, { message: 'Unit price must be a valid number.' })
   unitPrice: number;
 
+
   @IsNumber({}, { message: 'Quantity must be a valid number.' })
   quantity: number;
+
+  @IsNumber({}, { message: 'Annual Coupon Rate must be a valid number.' })
+  annualCouponRate: number;
 
   @IsMongoId({ message: 'User must be a valid MongoDB ObjectId.' })
   @IsOptional() // This allows it to be missing if you handle it server-side
