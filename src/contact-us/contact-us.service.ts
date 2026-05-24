@@ -9,8 +9,8 @@ export class ContactUsService {
 
   async contactUs(contactUsDto: ContactUsDto) {
     await this.emailService.sendEmail({
-      name: `Monefi Admin`,
-      email: `hello@monefi.co.uk`,
+      name: `Baker Jones Holding Admin`,
+      email: `hello@bakerjonesholdings.com`,
       subject: `New message form ${contactUsDto.firstName} ${contactUsDto.lastName}`,
       htmlbody: ContactFormDetailsEmail({
         name: `${contactUsDto.firstName} ${contactUsDto.lastName}`,
@@ -20,7 +20,7 @@ export class ContactUsService {
       }),
     });
     //   await this.emailService.sendEmail({
-    //   name: `Monefi Developer`,
+    //   name: `Baker Jones Holding Developer`,
     //   email: '',
     //   subject: `New message form ${contactUsDto.firstName} ${contactUsDto.lastName}`,
     //   htmlbody: ContactFormDetailsEmail({

@@ -232,7 +232,7 @@ export class UsersService {
       await this.emailService.sendEmail({
         email: user.email,
         name: user.email,
-        subject: 'Password reset link from Monefi.',
+        subject: 'Password reset link from Baker Jones Holding.',
         htmlbody: ResetPasswordEmail(passwordResetLink),
       });
       return null;

@@ -2,9 +2,9 @@ const allowedOrigin = [
   'http://localhost:3000',
   'http://localhost:3001',
   'http://192.168.1.45:3000',
-  'https://staging.monefi.co.uk',
-  'https://monefi.co.uk',
-  'https://www.monefi.co.uk',
+  'https://staging.bakerjonesholdings.com',
+  'https://bakerjonesholdings.com',
+  'https://www.bakerjonesholdings.com',
 ];
 
 const origin = (origin: any, callback: any) => {

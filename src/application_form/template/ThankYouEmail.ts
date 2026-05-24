@@ -6,7 +6,7 @@ export const ThankYouEmail = `
         <!-- Header -->
         <tr style="background-color:#232323;">
           <td align="left" style="padding: 20px;">
-            <img src="https://i.imgur.com/IeSz6wc.png" alt="monefi" width="100" style="display:block;">
+            <img src="https://i.imgur.com/IeSz6wc.png" alt="bakerjonesholdings" width="100" style="display:block;">
           </td>
         </tr>
         <!-- Body -->
@@ -21,11 +21,11 @@ export const ThankYouEmail = `
             </p>
             <p style="margin: 0 0 15px 0;">
               In the meantime, feel free to contact us at 
-              <a href="mailto:hello@monefi.co.uk" style="color:#2a7ae2; text-decoration: none;">hello@monefi.co.uk</a> 
+              <a href="mailto:hello@bakerjonesholdings.com" style="color:#2a7ae2; text-decoration: none;">hello@bakerjonesholdings.com</a> 
               with any questions.
             </p>
             <p style="margin: 0 0 15px 0;">Best regards,</p>
-            <p style="margin: 0;color:black">Administration Team<br>Monefi</p>
+            <p style="margin: 0;color:black">Administration Team<br>Baker Jones Holding</p>
           </td>
         </tr>
         <!-- Footer spacing -->

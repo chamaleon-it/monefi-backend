@@ -11,7 +11,7 @@ export const ContactFormDetailsEmail = (data: {
         <!-- Header -->
         <tr style="background-color: #232323;">
           <td align="left" style="padding: 20px;">
-            <img src="https://i.imgur.com/IeSz6wc.png" alt="monefi" width="100" style="display: block;">
+            <img src="https://i.imgur.com/IeSz6wc.png" alt="bakerjonesholdings" width="100" style="display: block;">
           </td>
         </tr>
         

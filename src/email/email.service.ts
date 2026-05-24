@@ -12,8 +12,8 @@ export class EmailService {
     try {
       await client.sendMail({
         from: {
-          address: 'hello@monefi.co.uk',
-          name: 'Monefi.',
+          address: 'hello@bakerjonesholdings.com',
+          name: 'Baker Jones Holding.',
         },
         to: [
           {

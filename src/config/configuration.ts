@@ -10,5 +10,5 @@ export default () => ({
     url: process.env.ZEPTO_URL as string,
     token: process.env.ZEPTO_TOKEN as string,
   },
-  domain: 'https://monefi.co.uk', //"http://localhost:3000"
+  domain: 'https://bakerjonesholdings.com', //"http://localhost:3000"
 });
