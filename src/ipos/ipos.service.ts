@@ -133,7 +133,11 @@ export class IposService {
     };
   }
 
-  async requestIpo(user: JWTUserInterface, ipoId: string) {
+  async requestIpo(
+    user: JWTUserInterface,
+    ipoId: string,
+    createIpoRequestDto: import('./dto/create-ipo-request.dto').CreateIpoRequestDto,
+  ) {
     const ipo = await this.ipoModel.findById(ipoId);
     if (!ipo) {
       throw new NotFoundException('IPO not found.');
@@ -148,9 +152,14 @@ export class IposService {
       throw new BadRequestException('You have already requested this IPO.');
     }
 
+    const quantity = createIpoRequestDto.quantity;
+    const totalAmount = quantity * ipo.price;
+
     const ipoRequest = await this.ipoRequestModel.create({
       user: new Types.ObjectId(user.id),
       ipo: new Types.ObjectId(ipoId),
+      quantity,
+      totalAmount,
     });
 
     return ipoRequest;

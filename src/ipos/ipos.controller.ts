@@ -103,8 +103,9 @@ export class IposController {
   async requestIpo(
     @GetUser() user: JWTUserInterface,
     @Param('id') id: string,
+    @Body() createIpoRequestDto: import('./dto/create-ipo-request.dto').CreateIpoRequestDto,
   ) {
-    const data = await this.iposService.requestIpo(user, id);
+    const data = await this.iposService.requestIpo(user, id, createIpoRequestDto);
     return {
       message: 'IPO requested successfully.',
       data,

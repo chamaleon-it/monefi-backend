@@ -58,6 +58,10 @@ export class CreateIpoDto {
   @IsNotEmpty()
   issueSize: number;
 
+  @IsNumber()
+  @IsNotEmpty()
+  price: number;
+
   @IsString()
   @IsOptional()
   companyDescription?: string;

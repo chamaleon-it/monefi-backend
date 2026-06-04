@@ -36,6 +36,9 @@ export class Ipo {
   @Prop({ required: true })
   issueSize: number;
 
+  @Prop({ required: true })
+  price: number;
+
   @Prop({ default: null })
   companyDescription: string;
 

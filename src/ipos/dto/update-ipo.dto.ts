@@ -1,12 +1,4 @@
-import { IsBoolean, IsEnum, IsOptional } from 'class-validator';
-import { IpoStatus } from 'src/enum/ipo-status.enum';
+import { PartialType } from '@nestjs/mapped-types';
+import { CreateIpoDto } from './create-ipo.dto';
 
-export class UpdateIpoDto {
-  @IsEnum(IpoStatus)
-  @IsOptional()
-  status?: IpoStatus;
-
-  @IsBoolean()
-  @IsOptional()
-  isPublic?: boolean;
-}
+export class UpdateIpoDto extends PartialType(CreateIpoDto) {}

@@ -20,6 +20,12 @@ export class IpoRequest {
     default: IpoRequestStatus.PENDING,
   })
   status: IpoRequestStatus;
+
+  @Prop({ required: true })
+  quantity: number;
+
+  @Prop({ required: true })
+  totalAmount: number;
 }
 
 export const IpoRequestSchema = SchemaFactory.createForClass(IpoRequest);
