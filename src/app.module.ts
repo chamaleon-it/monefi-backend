@@ -20,7 +20,7 @@ import { IposModule } from './ipos/ipos.module';
 @Module({
   imports: [
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'uploads'),
+      rootPath: join(process.cwd(), 'uploads'),
       serveRoot: '/uploads', // Use serveRoot for static files like images
     }),
     ConfigModule.forRoot({

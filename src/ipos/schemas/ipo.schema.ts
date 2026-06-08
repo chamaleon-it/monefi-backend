@@ -50,6 +50,9 @@ export class Ipo {
 
   @Prop({ default: true })
   isPublic: boolean;
+
+  @Prop({ default: null })
+  logoUrl: string;
 }
 
 export const IpoSchema = SchemaFactory.createForClass(Ipo);

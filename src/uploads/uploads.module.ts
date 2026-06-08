@@ -12,7 +12,7 @@ import { diskStorage } from 'multer';
       useFactory: () => ({
         storage: diskStorage({
           destination: (req, file, cb) => {
-            const uploadPath = path.join(__dirname, '..', '..', 'uploads');
+            const uploadPath = path.join(process.cwd(), 'uploads');
             fs.mkdirSync(uploadPath, { recursive: true });
             cb(null, uploadPath);
           },
@@ -29,6 +29,7 @@ import { diskStorage } from 'multer';
       }),
     }),
   ],
+  exports: [UploadsService],
   controllers: [UploadsController],
   providers: [UploadsService],
 })

@@ -8,8 +8,12 @@ import {
   Post,
   Query,
   UseGuards,
+  UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { IposService } from './ipos.service';
+import { UploadsService } from 'src/uploads/uploads.service';
 import { JwtAuthGuard } from 'src/auth/guards/roles.guard';
 import { RolesGuard } from 'src/auth/guards/ jwt-auth.guard';
 import { Roles } from 'src/auth/decorators/roles.decorator';
@@ -24,7 +28,7 @@ import { GetAllIpoRequests } from './dto/get-all-ipo-requests.dto';
 
 @Controller('ipos')
 export class IposController {
-  constructor(private readonly iposService: IposService) {}
+  constructor(private readonly iposService: IposService, private readonly uploadsService: UploadsService) {}
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRoles.ADMIN)

@@ -64,6 +64,10 @@ export class CreateIpoDto {
 
   @IsString()
   @IsOptional()
+  logoUrl?: string;
+
+  @IsString()
+  @IsOptional()
   companyDescription?: string;
 
   @IsString()

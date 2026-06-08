@@ -1,8 +1,8 @@
-import { IsNotEmpty, IsNumber, Min } from 'class-validator';
+import { IsNumber, IsOptional, Min } from 'class-validator';
 
 export class CreateIpoRequestDto {
   @IsNumber()
-  @IsNotEmpty()
+  @IsOptional()
   @Min(1)
-  quantity: number;
+  quantity?: number;
 }

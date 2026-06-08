@@ -21,7 +21,7 @@ export class IposService {
   constructor(
     @InjectModel(Ipo.name) private ipoModel: Model<Ipo>,
     @InjectModel(IpoRequest.name) private ipoRequestModel: Model<IpoRequest>,
-  ) {}
+  ) { }
 
   async createIpo(createIpoDto: CreateIpoDto) {
     const isIpoExist = await this.ipoModel.exists({
@@ -70,19 +70,10 @@ export class IposService {
   }
 
   async updateIpo(ipoId: string, updateIpoDto: UpdateIpoDto) {
-    const ipo = await this.ipoModel.findById(ipoId);
+    const ipo = await this.ipoModel.findByIdAndUpdate(ipoId, updateIpoDto, { new: true });
     if (!ipo) {
       throw new NotFoundException('IPO not found.');
     }
-
-    if (updateIpoDto.status !== undefined) {
-      ipo.status = updateIpoDto.status;
-    }
-    if (updateIpoDto.isPublic !== undefined) {
-      ipo.isPublic = updateIpoDto.isPublic;
-    }
-
-    await ipo.save();
     return ipo;
   }
 
@@ -143,16 +134,7 @@ export class IposService {
       throw new NotFoundException('IPO not found.');
     }
 
-    const existingRequest = await this.ipoRequestModel.exists({
-      user: new Types.ObjectId(user.id),
-      ipo: new Types.ObjectId(ipoId),
-    });
-
-    if (existingRequest) {
-      throw new BadRequestException('You have already requested this IPO.');
-    }
-
-    const quantity = createIpoRequestDto.quantity;
+    const quantity = createIpoRequestDto.quantity ?? 1;
     const totalAmount = quantity * ipo.price;
 
     const ipoRequest = await this.ipoRequestModel.create({
@@ -172,7 +154,7 @@ export class IposService {
     const total = await this.ipoRequestModel.countDocuments();
     const requests = await this.ipoRequestModel
       .find()
-      .populate('user', 'firstName lastName email')
+      .populate('user', 'name email')
       .populate('ipo', 'name stockSymbol companyName')
       .skip(skip)
       .limit(limit)
