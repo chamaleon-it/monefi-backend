@@ -15,11 +15,12 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { EmailModule } from './email/email.module';
 import { ContactUsModule } from './contact-us/contact-us.module';
+import { IposModule } from './ipos/ipos.module';
 
 @Module({
   imports: [
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'uploads'),
+      rootPath: join(process.cwd(), 'uploads'),
       serveRoot: '/uploads', // Use serveRoot for static files like images
     }),
     ConfigModule.forRoot({
@@ -35,6 +36,7 @@ import { ContactUsModule } from './contact-us/contact-us.module';
     UploadsModule,
     EmailModule,
     ContactUsModule,
+    IposModule,
   ],
   controllers: [AppController],
   providers: [AppService],
