@@ -16,6 +16,7 @@ import { join } from 'path';
 import { EmailModule } from './email/email.module';
 import { ContactUsModule } from './contact-us/contact-us.module';
 import { IposModule } from './ipos/ipos.module';
+import { SupportModule } from './support/support.module';
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { IposModule } from './ipos/ipos.module';
     EmailModule,
     ContactUsModule,
     IposModule,
+    SupportModule,
   ],
   controllers: [AppController],
   providers: [AppService],
