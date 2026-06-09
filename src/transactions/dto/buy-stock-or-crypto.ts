@@ -25,6 +25,7 @@ export class BuyStockOrCrypto {
   quantity: number;
 
   @IsNumber({}, { message: 'Annual Coupon Rate must be a valid number.' })
+  @IsOptional()
   annualCouponRate: number;
 
   @IsMongoId({ message: 'User must be a valid MongoDB ObjectId.' })
@@ -36,7 +37,7 @@ export class BuyStockOrCrypto {
   totalValue: number;
 
   // Use IsDateString to validate the format
-@IsOptional()
+  @IsOptional()
   @IsDateString({}, { message: 'Enter a valid buy back date string (e.g., YYYY-MM-DD).' })
   @Transform(({ value }) => (value === '' ? undefined : value))
   buyBackDate?: string; // The date is received as a string
