@@ -22,7 +22,7 @@ export class TransactionsService {
     @InjectModel(Transaction.name) private transactionModel: Model<Transaction>,
     private readonly usersService: UsersService,
     private readonly portfolioService: PortfolioService,
-  ) {}
+  ) { }
 
   async buyStockOrCrypto(buyStockOrCrypto: BuyStockOrCrypto) {
     try {
@@ -37,7 +37,7 @@ export class TransactionsService {
     }
   }
 
-  async buyBond() {}
+  async buyBond() { }
 
   async getTransactions(
     user: JWTUserInterface,
@@ -57,7 +57,7 @@ export class TransactionsService {
         .populate('user', 'email name')
         .skip(skip)
         .limit(limit)
-        .sort('-createdAt')
+        .sort('createdAt')
         .lean();
 
       const totalPage = Math.ceil(total / limit);
