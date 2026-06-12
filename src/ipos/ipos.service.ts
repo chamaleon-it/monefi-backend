@@ -21,7 +21,7 @@ export class IposService {
   constructor(
     @InjectModel(Ipo.name) private ipoModel: Model<Ipo>,
     @InjectModel(IpoRequest.name) private ipoRequestModel: Model<IpoRequest>,
-  ) { }
+  ) {}
 
   async createIpo(createIpoDto: CreateIpoDto) {
     const isIpoExist = await this.ipoModel.exists({
@@ -70,7 +70,9 @@ export class IposService {
   }
 
   async updateIpo(ipoId: string, updateIpoDto: UpdateIpoDto) {
-    const ipo = await this.ipoModel.findByIdAndUpdate(ipoId, updateIpoDto, { new: true });
+    const ipo = await this.ipoModel.findByIdAndUpdate(ipoId, updateIpoDto, {
+      new: true,
+    });
     if (!ipo) {
       throw new NotFoundException('IPO not found.');
     }
@@ -205,10 +207,7 @@ export class IposService {
     };
   }
 
-  async updateRequestStatus(
-    requestId: string,
-    updateDto: UpdateIpoRequestDto,
-  ) {
+  async updateRequestStatus(requestId: string, updateDto: UpdateIpoRequestDto) {
     const request = await this.ipoRequestModel.findById(requestId);
     if (!request) {
       throw new NotFoundException('IPO request not found.');

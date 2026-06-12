@@ -28,7 +28,10 @@ import { GetAllIpoRequests } from './dto/get-all-ipo-requests.dto';
 
 @Controller('ipos')
 export class IposController {
-  constructor(private readonly iposService: IposService, private readonly uploadsService: UploadsService) {}
+  constructor(
+    private readonly iposService: IposService,
+    private readonly uploadsService: UploadsService,
+  ) {}
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRoles.ADMIN)
@@ -62,9 +65,8 @@ export class IposController {
   @Roles(UserRoles.ADMIN)
   @Get('requests')
   async getAllRequests(@Query() getAllIpoRequests: GetAllIpoRequests) {
-    const { data, pagination } = await this.iposService.getAllRequests(
-      getAllIpoRequests,
-    );
+    const { data, pagination } =
+      await this.iposService.getAllRequests(getAllIpoRequests);
     return {
       message: 'All IPO requests were retrieved.',
       data,
@@ -107,9 +109,14 @@ export class IposController {
   async requestIpo(
     @GetUser() user: JWTUserInterface,
     @Param('id') id: string,
-    @Body() createIpoRequestDto: import('./dto/create-ipo-request.dto').CreateIpoRequestDto,
+    @Body()
+    createIpoRequestDto: import('./dto/create-ipo-request.dto').CreateIpoRequestDto,
   ) {
-    const data = await this.iposService.requestIpo(user, id, createIpoRequestDto);
+    const data = await this.iposService.requestIpo(
+      user,
+      id,
+      createIpoRequestDto,
+    );
     return {
       message: 'IPO requested successfully.',
       data,
@@ -119,10 +126,7 @@ export class IposController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRoles.ADMIN)
   @Patch(':id')
-  async updateIpo(
-    @Param('id') id: string,
-    @Body() updateIpoDto: UpdateIpoDto,
-  ) {
+  async updateIpo(@Param('id') id: string, @Body() updateIpoDto: UpdateIpoDto) {
     const data = await this.iposService.updateIpo(id, updateIpoDto);
     return {
       message: 'IPO updated successfully.',

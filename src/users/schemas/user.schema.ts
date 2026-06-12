@@ -62,8 +62,8 @@ export class User {
     file: string;
   };
 
-  @Prop({default:KycStatus.NotSubmitted,enum:KycStatus,required:true})
-  kycStatus: KycStatus
+  @Prop({ default: KycStatus.NotSubmitted, enum: KycStatus, required: true })
+  kycStatus: KycStatus;
 
   @Prop({
     default: [],
@@ -75,7 +75,6 @@ export class User {
       },
     ],
   })
-  
   depositHistory: {
     amount: number;
     date: Date;

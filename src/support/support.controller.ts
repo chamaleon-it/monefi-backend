@@ -1,4 +1,13 @@
-import { Controller, Post, Get, Patch, Param, Body, UseGuards, Req } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Get,
+  Patch,
+  Param,
+  Body,
+  UseGuards,
+  Req,
+} from '@nestjs/common';
 import { SupportService } from './support.service';
 import { CreateSupportTicketDto } from './dto/create-support-ticket.dto';
 import { UpdateSupportTicketDto } from './dto/update-support-ticket.dto';
@@ -12,11 +21,14 @@ import { JWTUserInterface } from 'src/interface/jwt-user.interface';
 @Controller('support')
 @UseGuards(JwtAuthGuard, RolesGuard)
 export class SupportController {
-  constructor(private readonly supportService: SupportService) { }
+  constructor(private readonly supportService: SupportService) {}
 
   @Post()
   @Roles(UserRoles.USER, UserRoles.ADMIN)
-  async create(@GetUser() user: JWTUserInterface, @Body() createDto: CreateSupportTicketDto) {
+  async create(
+    @GetUser() user: JWTUserInterface,
+    @Body() createDto: CreateSupportTicketDto,
+  ) {
     return this.supportService.create(user.id, createDto);
   }
 
@@ -32,7 +44,10 @@ export class SupportController {
 
   @Patch(':id')
   @Roles(UserRoles.ADMIN)
-  async updateStatus(@Param('id') id: string, @Body() updateDto: UpdateSupportTicketDto) {
+  async updateStatus(
+    @Param('id') id: string,
+    @Body() updateDto: UpdateSupportTicketDto,
+  ) {
     return this.supportService.updateStatus(id, updateDto);
   }
 }

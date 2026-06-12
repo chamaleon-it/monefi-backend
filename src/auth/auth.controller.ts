@@ -15,7 +15,7 @@ export class AuthController {
   async login(@Body() loginDto: LoginDto, @Req() req: Request) {
     const ip = req.ip || req.connection?.remoteAddress || 'Unknown IP';
     const device = req.headers['user-agent'] || 'Unknown Device';
-    
+
     const data = await this.authService.login(loginDto, ip, device);
     return {
       message: 'Login successfull',

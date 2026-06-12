@@ -50,7 +50,7 @@ export class AuthService {
         if (!loginDto.twoFactorCode) {
           return { requires2FA: true };
         }
-        
+
         // Use otplib to verify the token
         const otplib = require('otplib');
         const isValid = otplib.authenticator.verify({
@@ -76,7 +76,12 @@ export class AuthService {
         refreshTokenPayload,
         { expiresIn: '7d', secret: configuration().secret.refreshToken },
       );
-      await this.usersService.updateLoginTime(user._id, refreshToken, ip, device);
+      await this.usersService.updateLoginTime(
+        user._id,
+        refreshToken,
+        ip,
+        device,
+      );
       return {
         accessToken,
         refreshToken,

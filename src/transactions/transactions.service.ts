@@ -23,7 +23,7 @@ export class TransactionsService {
     @InjectModel(Transaction.name) private transactionModel: Model<Transaction>,
     private readonly usersService: UsersService,
     private readonly portfolioService: PortfolioService,
-  ) { }
+  ) {}
 
   async buyStockOrCrypto(buyStockOrCrypto: BuyStockOrCrypto) {
     try {
@@ -38,7 +38,7 @@ export class TransactionsService {
     }
   }
 
-  async buyBond() { }
+  async buyBond() {}
 
   async getTransactions(
     user: JWTUserInterface,
@@ -46,7 +46,10 @@ export class TransactionsService {
   ) {
     try {
       const { limit = 10, page = 1 } = getAllTransactions;
-      const filter: { user?: mongoose.Types.ObjectId; investmentType?: InvestmentType } = {};
+      const filter: {
+        user?: mongoose.Types.ObjectId;
+        investmentType?: InvestmentType;
+      } = {};
       if (user.role === UserRoles.USER) {
         filter.user = user.id;
       }
@@ -149,6 +152,5 @@ export class TransactionsService {
     if (!result) {
       throw new NotFoundException('Transaction not found.');
     }
-
   }
 }

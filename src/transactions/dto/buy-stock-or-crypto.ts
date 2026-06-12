@@ -20,7 +20,6 @@ export class BuyStockOrCrypto {
   @IsNumber({}, { message: 'Unit price must be a valid number.' })
   unitPrice: number;
 
-
   @IsNumber({}, { message: 'Quantity must be a valid number.' })
   quantity: number;
 
@@ -42,7 +41,10 @@ export class BuyStockOrCrypto {
 
   // Use IsDateString to validate the format
   @IsOptional()
-  @IsDateString({}, { message: 'Enter a valid buy back date string (e.g., YYYY-MM-DD).' })
+  @IsDateString(
+    {},
+    { message: 'Enter a valid buy back date string (e.g., YYYY-MM-DD).' },
+  )
   @Transform(({ value }) => (value === '' ? undefined : value))
   buyBackDate?: string; // The date is received as a string
 

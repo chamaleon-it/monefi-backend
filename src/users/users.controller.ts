@@ -179,17 +179,16 @@ export class UsersController {
     };
   }
 
-
-  @UseGuards(JwtAuthGuard,RolesGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRoles.ADMIN)
-  @Post("/update_status")
-    async updateKycStatus(@Body() updateKycDto:UpdateKycDto){
-      const data = await this.usersService.updateKycStatus(updateKycDto)
-      return {
-        message:"User KYC status is updated.",
-        data
-      }
-    }
+  @Post('/update_status')
+  async updateKycStatus(@Body() updateKycDto: UpdateKycDto) {
+    const data = await this.usersService.updateKycStatus(updateKycDto);
+    return {
+      message: 'User KYC status is updated.',
+      data,
+    };
+  }
 
   @UseGuards(JwtAuthGuard)
   @Patch('/profile')
@@ -197,7 +196,10 @@ export class UsersController {
     @GetUser() user: JWTUserInterface,
     @Body() updateProfileDto: any,
   ) {
-    const data = await this.usersService.updateProfile(user.id, updateProfileDto);
+    const data = await this.usersService.updateProfile(
+      user.id,
+      updateProfileDto,
+    );
     return {
       message: 'Profile updated successfully.',
       data,

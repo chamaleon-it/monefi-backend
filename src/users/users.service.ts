@@ -172,7 +172,10 @@ export class UsersService {
   }
 
   async getUserByEmail(email: string) {
-    return await this.userModal.findOne({ email }).select('+password +twoFactorSecret').lean();
+    return await this.userModal
+      .findOne({ email })
+      .select('+password +twoFactorSecret')
+      .lean();
   }
 
   async getUserByIdWithRefreshToken(id: mongoose.Types.ObjectId) {
@@ -193,7 +196,12 @@ export class UsersService {
     }
   }
 
-  async updateLoginTime(id: mongoose.Types.ObjectId, refreshToken: string, ip: string, device: string) {
+  async updateLoginTime(
+    id: mongoose.Types.ObjectId,
+    refreshToken: string,
+    ip: string,
+    device: string,
+  ) {
     await this.userModal.updateOne(
       { _id: id },
       {
@@ -204,9 +212,9 @@ export class UsersService {
         $push: {
           loginActivity: {
             $each: [{ ip, device, time: new Date() }],
-            $slice: -20 // keep only the last 20 logins
-          }
-        }
+            $slice: -20, // keep only the last 20 logins
+          },
+        },
       },
     );
   }
@@ -331,24 +339,28 @@ export class UsersService {
     return user.kycStatus || KycStatus.NotSubmitted;
   }
 
-
-    async updateKycStatus(updateKycDto:UpdateKycDto){
-        const user = await this.userModal.findById(updateKycDto.id)
-        if(!user){
-          throw new BadRequestException("User not found")
-        }
-        user.kycStatus = updateKycDto.status
-        await user.save()
-        return user
+  async updateKycStatus(updateKycDto: UpdateKycDto) {
+    const user = await this.userModal.findById(updateKycDto.id);
+    if (!user) {
+      throw new BadRequestException('User not found');
     }
+    user.kycStatus = updateKycDto.status;
+    await user.save();
+    return user;
+  }
 
-  async updateProfile(id: string | mongoose.Types.ObjectId, updateProfileDto: any) {
+  async updateProfile(
+    id: string | mongoose.Types.ObjectId,
+    updateProfileDto: any,
+  ) {
     const user = await this.userModal.findById(id);
     if (!user) throw new NotFoundException('User not found.');
 
     if (updateProfileDto.name) user.name = updateProfileDto.name;
-    if (updateProfileDto.accountType) user.accountType = updateProfileDto.accountType;
-    if (updateProfileDto.phoneNumber) user.phoneNumber = updateProfileDto.phoneNumber;
+    if (updateProfileDto.accountType)
+      user.accountType = updateProfileDto.accountType;
+    if (updateProfileDto.phoneNumber)
+      user.phoneNumber = updateProfileDto.phoneNumber;
     if (updateProfileDto.address) user.address = updateProfileDto.address;
 
     await user.save();
@@ -363,16 +375,16 @@ export class UsersService {
     const otpauthUrl = otplib.authenticator.keyuri(
       user.email,
       'Monefi',
-      secret
+      secret,
     );
 
     await this.userModal.updateOne(
       { _id: user.id },
-      { $set: { twoFactorSecret: secret } }
+      { $set: { twoFactorSecret: secret } },
     );
 
     const qrCodeDataUrl = await qrcode.toDataURL(otpauthUrl);
-    
+
     return {
       qrCodeDataUrl,
       secret,
@@ -381,8 +393,10 @@ export class UsersService {
 
   async turnOnTwoFactorAuthentication(user: JWTUserInterface, code: string) {
     const otplib = require('otplib');
-    const foundUser = await this.userModal.findById(user.id).select('+twoFactorSecret');
-    
+    const foundUser = await this.userModal
+      .findById(user.id)
+      .select('+twoFactorSecret');
+
     if (!foundUser || !foundUser.twoFactorSecret) {
       throw new BadRequestException('2FA secret not generated.');
     }
@@ -402,7 +416,9 @@ export class UsersService {
 
   async turnOffTwoFactorAuthentication(user: JWTUserInterface, code: string) {
     const otplib = require('otplib');
-    const foundUser = await this.userModal.findById(user.id).select('+twoFactorSecret');
+    const foundUser = await this.userModal
+      .findById(user.id)
+      .select('+twoFactorSecret');
 
     if (!foundUser || !foundUser.twoFactorSecret) {
       throw new BadRequestException('2FA is not enabled.');
@@ -418,7 +434,7 @@ export class UsersService {
     }
 
     foundUser.twoFactorEnabled = false;
-    foundUser.twoFactorSecret = "";
+    foundUser.twoFactorSecret = '';
     await foundUser.save();
   }
 }

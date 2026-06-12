@@ -1,5 +1,12 @@
 import mongoose from 'mongoose';
-import { IsMongoId, IsDate, IsNumber, IsNotEmpty, IsString, IsOptional } from 'class-validator';
+import {
+  IsMongoId,
+  IsDate,
+  IsNumber,
+  IsNotEmpty,
+  IsString,
+  IsOptional,
+} from 'class-validator';
 import { Transform } from 'class-transformer';
 
 export class UpdateInterestDto {

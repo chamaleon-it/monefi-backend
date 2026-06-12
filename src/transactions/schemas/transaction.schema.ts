@@ -25,10 +25,9 @@ export class Transaction {
 
   @Prop({ default: 0 })
   fees: number;
- 
+
   @Prop({ required: true })
   unitPrice: number;
-
 
   @Prop({ required: true })
   totalValue: number;
@@ -51,8 +50,8 @@ export class Transaction {
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Bond' })
   bond: mongoose.Types.ObjectId;
 
-  @Prop({type:Date,default:null})
-  buyBackDate:Date
+  @Prop({ type: Date, default: null })
+  buyBackDate: Date;
 
   @Prop({ type: Date, default: Date.now, immutable: false })
   createdAt: Date;

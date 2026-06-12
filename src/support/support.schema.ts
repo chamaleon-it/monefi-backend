@@ -1,6 +1,9 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Document, Types } from 'mongoose';
-import { SupportTicketStatus, SupportTicketSubject } from '../enum/support.enum';
+import {
+  SupportTicketStatus,
+  SupportTicketSubject,
+} from '../enum/support.enum';
 import { User } from 'src/users/schemas/user.schema';
 
 export type SupportTicketDocument = SupportTicket & Document;
@@ -16,7 +19,11 @@ export class SupportTicket {
   @Prop({ required: true })
   message: string;
 
-  @Prop({ type: String, enum: SupportTicketStatus, default: SupportTicketStatus.OPEN })
+  @Prop({
+    type: String,
+    enum: SupportTicketStatus,
+    default: SupportTicketStatus.OPEN,
+  })
   status: string;
 }
 

@@ -114,7 +114,6 @@ export class CreateApplicationDto {
   @IsString() homePhone: string;
   @IsString() mobilePhone: string;
 
-
   @IsString() country: string;
   @IsString() houseNumberOrName: string;
   @IsString() streetName: string;
