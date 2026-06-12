@@ -172,7 +172,7 @@ export class UsersService {
   }
 
   async getUserByEmail(email: string) {
-    return await this.userModal.findOne({ email }).select('+password').lean();
+    return await this.userModal.findOne({ email }).select('+password +twoFactorSecret').lean();
   }
 
   async getUserByIdWithRefreshToken(id: mongoose.Types.ObjectId) {
@@ -193,12 +193,20 @@ export class UsersService {
     }
   }
 
-  async updateLoginTime(id: mongoose.Types.ObjectId, refreshToken: string) {
+  async updateLoginTime(id: mongoose.Types.ObjectId, refreshToken: string, ip: string, device: string) {
     await this.userModal.updateOne(
       { _id: id },
       {
-        lastLogin: new Date(),
-        refreshToken: refreshToken,
+        $set: {
+          lastLogin: new Date(),
+          refreshToken: refreshToken,
+        },
+        $push: {
+          loginActivity: {
+            $each: [{ ip, device, time: new Date() }],
+            $slice: -20 // keep only the last 20 logins
+          }
+        }
       },
     );
   }
@@ -332,5 +340,85 @@ export class UsersService {
         user.kycStatus = updateKycDto.status
         await user.save()
         return user
-      }
+    }
+
+  async updateProfile(id: string | mongoose.Types.ObjectId, updateProfileDto: any) {
+    const user = await this.userModal.findById(id);
+    if (!user) throw new NotFoundException('User not found.');
+
+    if (updateProfileDto.name) user.name = updateProfileDto.name;
+    if (updateProfileDto.accountType) user.accountType = updateProfileDto.accountType;
+    if (updateProfileDto.phoneNumber) user.phoneNumber = updateProfileDto.phoneNumber;
+    if (updateProfileDto.address) user.address = updateProfileDto.address;
+
+    await user.save();
+    return user;
+  }
+
+  async generateTwoFactorSecret(user: JWTUserInterface) {
+    const otplib = require('otplib');
+    const qrcode = require('qrcode');
+
+    const secret = otplib.authenticator.generateSecret();
+    const otpauthUrl = otplib.authenticator.keyuri(
+      user.email,
+      'Monefi',
+      secret
+    );
+
+    await this.userModal.updateOne(
+      { _id: user.id },
+      { $set: { twoFactorSecret: secret } }
+    );
+
+    const qrCodeDataUrl = await qrcode.toDataURL(otpauthUrl);
+    
+    return {
+      qrCodeDataUrl,
+      secret,
+    };
+  }
+
+  async turnOnTwoFactorAuthentication(user: JWTUserInterface, code: string) {
+    const otplib = require('otplib');
+    const foundUser = await this.userModal.findById(user.id).select('+twoFactorSecret');
+    
+    if (!foundUser || !foundUser.twoFactorSecret) {
+      throw new BadRequestException('2FA secret not generated.');
+    }
+
+    const isCodeValid = otplib.authenticator.verify({
+      token: code,
+      secret: foundUser.twoFactorSecret,
+    });
+
+    if (!isCodeValid) {
+      throw new BadRequestException('Invalid authentication code.');
+    }
+
+    foundUser.twoFactorEnabled = true;
+    await foundUser.save();
+  }
+
+  async turnOffTwoFactorAuthentication(user: JWTUserInterface, code: string) {
+    const otplib = require('otplib');
+    const foundUser = await this.userModal.findById(user.id).select('+twoFactorSecret');
+
+    if (!foundUser || !foundUser.twoFactorSecret) {
+      throw new BadRequestException('2FA is not enabled.');
+    }
+
+    const isCodeValid = otplib.authenticator.verify({
+      token: code,
+      secret: foundUser.twoFactorSecret,
+    });
+
+    if (!isCodeValid) {
+      throw new BadRequestException('Invalid authentication code.');
+    }
+
+    foundUser.twoFactorEnabled = false;
+    foundUser.twoFactorSecret = "";
+    await foundUser.save();
+  }
 }

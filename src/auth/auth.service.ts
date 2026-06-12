@@ -20,7 +20,7 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async login(loginDto: LoginDto) {
+  async login(loginDto: LoginDto, ip: string, device: string) {
     try {
       const user = await this.usersService.getUserByEmail(loginDto.email);
       if (!user) throw new NotFoundException('User not found');
@@ -44,6 +44,25 @@ export class AuthService {
       );
       if (!isPasswordMatching)
         throw new BadRequestException('Invalid credentials');
+
+      // 2FA Verification
+      if (user.twoFactorEnabled) {
+        if (!loginDto.twoFactorCode) {
+          return { requires2FA: true };
+        }
+        
+        // Use otplib to verify the token
+        const otplib = require('otplib');
+        const isValid = otplib.authenticator.verify({
+          token: loginDto.twoFactorCode,
+          secret: user.twoFactorSecret,
+        });
+
+        if (!isValid) {
+          throw new BadRequestException('Invalid 2FA code');
+        }
+      }
+
       const accessTokenPayload = {
         email: user.email,
         role: user.role,
@@ -57,7 +76,7 @@ export class AuthService {
         refreshTokenPayload,
         { expiresIn: '7d', secret: configuration().secret.refreshToken },
       );
-      await this.usersService.updateLoginTime(user._id, refreshToken);
+      await this.usersService.updateLoginTime(user._id, refreshToken, ip, device);
       return {
         accessToken,
         refreshToken,

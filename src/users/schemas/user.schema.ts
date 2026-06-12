@@ -81,6 +81,37 @@ export class User {
     date: Date;
     depositedBy: mongoose.Types.ObjectId;
   }[];
+
+  @Prop({ default: 'Individual', enum: ['Individual', 'Business'] })
+  accountType: string;
+
+  @Prop({ default: null, type: String })
+  phoneNumber: string;
+
+  @Prop({ default: null, type: String })
+  address: string;
+
+  @Prop({ default: false, type: Boolean })
+  twoFactorEnabled: boolean;
+
+  @Prop({ default: null, type: String, select: false })
+  twoFactorSecret: string;
+
+  @Prop({
+    default: [],
+    type: [
+      {
+        ip: String,
+        device: String,
+        time: Date,
+      },
+    ],
+  })
+  loginActivity: {
+    ip: string;
+    device: string;
+    time: Date;
+  }[];
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

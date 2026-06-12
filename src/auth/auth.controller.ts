@@ -1,4 +1,5 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Post, UseGuards, Req } from '@nestjs/common';
+import { Request } from 'express';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { JwtAuthGuard } from './guards/roles.guard';
@@ -11,8 +12,11 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post()
-  async login(@Body() loginDto: LoginDto) {
-    const data = await this.authService.login(loginDto);
+  async login(@Body() loginDto: LoginDto, @Req() req: Request) {
+    const ip = req.ip || req.connection?.remoteAddress || 'Unknown IP';
+    const device = req.headers['user-agent'] || 'Unknown Device';
+    
+    const data = await this.authService.login(loginDto, ip, device);
     return {
       message: 'Login successfull',
       data,

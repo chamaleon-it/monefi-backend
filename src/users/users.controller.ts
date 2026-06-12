@@ -190,6 +190,51 @@ export class UsersController {
         data
       }
     }
-  
-  
+
+  @UseGuards(JwtAuthGuard)
+  @Patch('/profile')
+  async updateProfile(
+    @GetUser() user: JWTUserInterface,
+    @Body() updateProfileDto: any,
+  ) {
+    const data = await this.usersService.updateProfile(user.id, updateProfileDto);
+    return {
+      message: 'Profile updated successfully.',
+      data,
+    };
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('/2fa/generate')
+  async generateTwoFactorSecret(@GetUser() user: JWTUserInterface) {
+    const data = await this.usersService.generateTwoFactorSecret(user);
+    return {
+      message: '2FA secret generated successfully.',
+      data,
+    };
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('/2fa/turn-on')
+  async turnOnTwoFactorAuth(
+    @GetUser() user: JWTUserInterface,
+    @Body('code') code: string,
+  ) {
+    await this.usersService.turnOnTwoFactorAuthentication(user, code);
+    return {
+      message: 'Two-factor authentication has been enabled.',
+    };
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('/2fa/turn-off')
+  async turnOffTwoFactorAuth(
+    @GetUser() user: JWTUserInterface,
+    @Body('code') code: string,
+  ) {
+    await this.usersService.turnOffTwoFactorAuthentication(user, code);
+    return {
+      message: 'Two-factor authentication has been disabled.',
+    };
+  }
 }
