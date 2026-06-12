@@ -28,6 +28,10 @@ export class BuyStockOrCrypto {
   @IsOptional()
   annualCouponRate: number;
 
+  @IsNumber({}, { message: 'Fees must be a valid number.' })
+  @IsOptional()
+  fees: number;
+
   @IsMongoId({ message: 'User must be a valid MongoDB ObjectId.' })
   @IsOptional() // This allows it to be missing if you handle it server-side
   user: mongoose.Types.ObjectId;

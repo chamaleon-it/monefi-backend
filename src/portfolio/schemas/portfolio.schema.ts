@@ -50,12 +50,16 @@ export class Portfolio {
       {
         date: Date,
         amount: Number,
+        paymentType: { type: String, default: 'Interest Payment' },
+        status: { type: String, default: 'Upcoming' },
       },
     ],
   })
   interest: {
     date: Date;
     amount: number;
+    paymentType: string;
+    status: string;
   }[];
 }
 

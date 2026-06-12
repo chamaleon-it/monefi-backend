@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { IsMongoId, IsDate, IsNumber, IsNotEmpty } from 'class-validator';
+import { IsMongoId, IsDate, IsNumber, IsNotEmpty, IsString, IsOptional } from 'class-validator';
 import { Transform } from 'class-transformer';
 
 export class UpdateInterestDto {
@@ -17,4 +17,12 @@ export class UpdateInterestDto {
   @IsNumber({}, { message: 'amount must be a number.' })
   @IsNotEmpty({ message: 'amount is required.' })
   amount: number;
+
+  @IsString()
+  @IsOptional()
+  paymentType?: string;
+
+  @IsString()
+  @IsOptional()
+  status?: string;
 }

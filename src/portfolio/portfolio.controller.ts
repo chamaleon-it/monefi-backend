@@ -10,6 +10,7 @@ import { ChangeBuyBackDto } from './dto/change-buyback.dto';
 import { UpdateCertificateDto } from './dto/update-certificate.dto';
 import { UpdateInterestDto } from './dto/update-interest.dto';
 import { DeleteInterestDto } from './dto/delete-interest.dto';
+import { UpdateInterestStatusDto } from './dto/update-interest-status.dto';
 
 @Controller('portfolio')
 export class PortfolioController {
@@ -72,6 +73,21 @@ export class PortfolioController {
     const data = await this.portfolioService.updateInterest(updateInterestDto);
     return {
       message: 'Interest is updated.',
+      data,
+    };
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRoles.ADMIN)
+  @Patch('/update_interest_status')
+  async updateInterestStatus(
+    @Body() updateInterestStatusDto: UpdateInterestStatusDto,
+  ) {
+    const data = await this.portfolioService.updateInterestStatus(
+      updateInterestStatusDto,
+    );
+    return {
+      message: 'Interest status is updated.',
       data,
     };
   }

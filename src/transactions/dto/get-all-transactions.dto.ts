@@ -1,4 +1,5 @@
-import { IsNumber, IsOptional } from 'class-validator';
+import { IsEnum, IsNumber, IsOptional } from 'class-validator';
+import { InvestmentType } from 'src/enum/investment-type.enum';
 
 export class GetAllTransactions {
   @IsNumber()
@@ -8,4 +9,8 @@ export class GetAllTransactions {
   @IsNumber()
   @IsOptional()
   limit?: number = 10;
+
+  @IsEnum(InvestmentType)
+  @IsOptional()
+  investmentType?: InvestmentType;
 }

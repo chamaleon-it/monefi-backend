@@ -15,6 +15,7 @@ import { UpdateStatusDto } from './dto/update-status.dto';
 import { TransactionStatus } from 'src/enum/transaction-status.enum';
 import { PortfolioService } from 'src/portfolio/portfolio.service';
 import { UpdateTransactionDateDto } from './dto/update-transaction-date.dto';
+import { InvestmentType } from 'src/enum/investment-type.enum';
 
 @Injectable()
 export class TransactionsService {
@@ -45,9 +46,12 @@ export class TransactionsService {
   ) {
     try {
       const { limit = 10, page = 1 } = getAllTransactions;
-      const filter: { user?: mongoose.Types.ObjectId } = {};
+      const filter: { user?: mongoose.Types.ObjectId; investmentType?: InvestmentType } = {};
       if (user.role === UserRoles.USER) {
         filter.user = user.id;
+      }
+      if (getAllTransactions.investmentType) {
+        filter.investmentType = getAllTransactions.investmentType;
       }
 
       const skip = (page - 1) * limit;

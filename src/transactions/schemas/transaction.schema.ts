@@ -20,8 +20,11 @@ export class Transaction {
   @Prop({ required: true })
   quantity: number;
 
-  @Prop({ required: true,default:0 })
- annualCouponRate:number
+  @Prop({ required: true, default: 0 })
+  annualCouponRate: number;
+
+  @Prop({ default: 0 })
+  fees: number;
  
   @Prop({ required: true })
   unitPrice: number;

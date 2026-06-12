@@ -14,6 +14,7 @@ import { UserRoles } from 'src/enum/user.enum';
 import { UpdateCertificateDto } from './dto/update-certificate.dto';
 import { UpdateInterestDto } from './dto/update-interest.dto';
 import { DeleteInterestDto } from './dto/delete-interest.dto';
+import { UpdateInterestStatusDto } from './dto/update-interest-status.dto';
 
 @Injectable()
 export class PortfolioService {
@@ -115,7 +116,30 @@ export class PortfolioService {
     portfolio.interest.push({
       date: updateInterestDto.date,
       amount: updateInterestDto.amount,
-    });
+      paymentType: updateInterestDto.paymentType || 'Interest Payment',
+      status: updateInterestDto.status || 'Upcoming',
+    } as any);
+    await portfolio.save();
+  }
+
+  async updateInterestStatus(
+    updateInterestStatusDto: UpdateInterestStatusDto,
+  ): Promise<void> {
+    const portfolio = await this.portfolioModel.findById(
+      updateInterestStatusDto.id,
+    );
+    if (!portfolio) throw new NotFoundException('Portfolio not found.');
+
+    const interestEntry = portfolio.interest.find(
+      (e: any) =>
+        e._id.toString() === updateInterestStatusDto.interestId.toString(),
+    );
+
+    if (!interestEntry) {
+      throw new NotFoundException('Interest entry not found.');
+    }
+
+    interestEntry.status = updateInterestStatusDto.status;
     await portfolio.save();
   }
 
